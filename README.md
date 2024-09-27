@@ -10,5 +10,5 @@ some external libraries.
 ## How to use TxEd
 To use TxEd you need Python on your device and that's it!
 
-To launch TxEd all you have to do is type 'python3 txed.py <path_to_file>' on UNIX type OS or 
-'py txed.py <path_to_file>' on Windows.
+To launch TxEd all you have to do is type `python3 txed.py <path_to_file>` on UNIX type OS or 
+`py txed.py <path_to_file>` on Windows.
