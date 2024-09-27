@@ -1,14 +1,46 @@
 # TxEd
 
-TxEd is a Python text editor that does not require any external library. 
+TxEd is a Python text editor that doesn't require any external pip Python packages.
 
-It started as a small university project and then he grow till this program.
+## Overview
 
-It's practical and can be used on devices that for some reason are not compatible with 'pip' or
-some external libraries.
+Born as a small university project, TxEd has evolved into a full-fledged program. 
 
-## How to use TxEd
-To use TxEd you need Python on your device and that's it!
+Its main feature is practicality, making it ideal for devices that, for various reasons, 
+are not compatible with 'pip' or some external libraries.
 
-To launch TxEd all you have to do is type `python3 txed.py <path_to_file>` on UNIX type OS or 
-`py txed.py <path_to_file>` on Windows.
+## Key Features
+
+- Implemented entirely in standard Python
+- No external dependencies required
+- Compatible with UNIX-like operating systems and Windows
+- Simple and intuitive interface
+
+## System Requirements
+
+- Python (version 3.x recommended)
+
+## How to Use TxEd
+
+Using TxEd is simple and straightforward. Here's how to launch it:
+
+### On UNIX-like systems (Linux, macOS)
+
+```
+python3 txed.py <file_path>
+```
+
+### On Windows
+
+```
+py txed.py <file_path>
+```
+
+Replace `<file_path>` with the path to the file you want to edit or create.
+
+## Contributing
+
+TxEd is an open-source project and welcomes contributions from the community. 
+
+If you're interested in improving TxEd, feel free to propose changes or report 
+issues through the issue management system on our GitHub page.
