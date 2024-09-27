@@ -1,5 +1,6 @@
 '''
-TEXT EDITOR
+TXED PYTHON TEXT EDITOR
+By Nicola Canzonieri - 2024
 
 
 Index:
