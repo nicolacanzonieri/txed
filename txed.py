@@ -177,7 +177,7 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
     for i in range(max_string_length):
         print("=", end="")
     print("\n", end="")
-    print("[CTRL+W : Close Source Editor , CTRL+S : Save file , CTRL+I/J/K/L/U/O : Move]")
+    print("[CTRL+W : Close TxEd , CTRL+S : Save file , CTRL+I/J/K/L/U/O : Move]")
 
 
 def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
@@ -259,12 +259,12 @@ def fix_cursor_position(file_vec, cursor_x, cursor_y) -> tuple:
 
 def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
     '''
-    Handle the whole Source Editor
+    Handle the whole text editor
     @param "file_vec" : the list obtained from the file (file_to_vec)
     @param "cursor_x" : cursor x position
     @param "cursor_y" : cursor y position
     '''
-    # PREPARE TO LAUNCH SOURCE EDITOR
+    # PREPARE TO LAUNCH TXED
     clear_terminal()
 
     # MAIN LOOP
@@ -293,7 +293,7 @@ def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
 
 def start_editor(path_to_file):
     '''
-    Start the Source Editor by giving it the path to a specific file
+    Start the text editor by giving it the path to a specific file
     '''
     # CURSOR POSITION
     cursor_x = 0
