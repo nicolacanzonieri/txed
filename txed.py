@@ -220,7 +220,7 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
     elif user_input == "DELETE" and cursor_x > 0:
         file_vec[cursor_y] = file_vec[cursor_y][:cursor_x-1] + file_vec[cursor_y][cursor_x:]
         cursor_x -= 1
-    elif user_input == "DELETE" and cursor_x == 0:
+    elif user_input == "DELETE" and cursor_x == 0 and cursor_y > 0:
         updated_file_vec = []
         index_1 = 0
         index_2 = 0
@@ -236,6 +236,8 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
         file_vec = extend_file_vec(updated_file_vec)
         cursor_y -= 1
         cursor_x = len(file_vec[cursor_y])
+    elif user_input == "DELETE" and cursor_x == 0 and cursor_y == 0:
+        None
     elif user_input == "ENTER":
         file_vec.insert(cursor_y + 1, file_vec[cursor_y][cursor_x:])
         file_vec[cursor_y] = file_vec[cursor_y][:cursor_x]
