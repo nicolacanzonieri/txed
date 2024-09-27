@@ -1,4 +1,4 @@
-# TxEd
+# txed
 
 TxEd is a Python text editor that doesn't require any external pip Python packages.
 
