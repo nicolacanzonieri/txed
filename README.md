@@ -9,6 +9,8 @@ Born as a small university project, TxEd has grown into a functional and practic
 While not exhaustive in features, it serves its purpose effectively, making it ideal for devices 
 that, for various reasons, are not compatible with 'pip' or some external libraries.
 
+TxEd can be also included inside other softwares.
+
 ## Key Features
 
 - Implemented entirely in standard Python
