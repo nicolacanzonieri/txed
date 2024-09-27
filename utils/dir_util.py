@@ -4,8 +4,6 @@ DIR UTIL
 Index:
 - get_path_separator()
 - get_path_to()
-- get_prnt_folder()
-- check()
 - create_file()
 '''
 
@@ -34,36 +32,6 @@ def get_path_to(path_to_file) -> str:
         full_path = full_path + get_path_separator() + item
     full_path = full_path[1:]
     return full_path
-
-
-def get_prnt_folder(current_path, prnt_lvl) -> str:
-    '''
-    Return a string containing the parent path for a given path.
-    
-    @param current_path: The path from which the parent folder will be extracted.
-    @param prnt_lvl: The level of parent directory to retrieve.
-    '''
-    path_len = len(current_path)
-    prnt_lvl_indx = 1
-    index = path_len
-
-    while index > 0 and prnt_lvl_indx > 0:
-        if current_path[index-1 : index] == get_path_separator():
-            if prnt_lvl_indx == prnt_lvl:
-                return current_path[0 : index]
-            else:
-                prnt_lvl_indx += 1
-        index -= 1
-    return current_path
-
-
-def check(path) -> bool:
-    '''
-    Return true if a certain file or directory exist in the given path
-    
-    @param "path" : a string containing the path to a directory or a file
-    '''
-    return os.path.exists(path)
 
 
 def create_file(path, file_text):

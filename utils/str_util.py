@@ -2,53 +2,12 @@
 STR UTIL
 
 Index:
-- clean_str()
-- str_to_char_list()
 - str_to_vec()
 - str_to_int()
 '''
 
 
 import math
-
-
-def clean_str(string) -> str:
-    '''
-    Return a string cleaned from the following "mistakes":
-    - Spaces at the start of the string
-
-    @param "string" : a string to clean
-    '''
-    better_str = ""
-    str_index = 0
-    spaces_at_the_start = True
-
-    while str_index < len(string):
-        if spaces_at_the_start:
-            if string[str_index : str_index + 1] == " ":
-                # The first chars of the string are 'space'
-                better_str = better_str
-            else:
-                better_str += string[str_index : str_index + 1]
-                spaces_at_the_start = False
-        else:
-            better_str += string[str_index : str_index + 1]
-        str_index += 1
-    return better_str
-
-
-def str_to_char_list(string) -> list:
-    '''
-    Return a vector where each cell is a character of a given string
-    
-    @param "string" : the interested string
-    '''
-    char_list = []
-    str_index = 0
-    while str_index < len(string):
-        char_list.append(string[str_index : (str_index + 1)])
-        str_index += 1
-    return char_list
     
 
 def str_to_vec(string) -> list:
