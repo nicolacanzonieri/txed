@@ -1,4 +1,5 @@
 {
 	"TXED VARIABLES": "",
-	"max string length": "100"
+	"max string length": "100",
+	"max_file_lines": "20"
 }

@@ -28,6 +28,7 @@ SYSTEM VARIABLES
 '''
 sys_var_json_path = get_path_to("json sys_var.json")
 max_string_length = str_to_int(get_json_value(sys_var_json_path, 1))
+max_file_lines = str_to_int(get_json_value(sys_var_json_path, 2))
 
 
 '''
@@ -56,11 +57,11 @@ if sys.platform == "win32":
             elif key == b"\x08":  # Backspace/Delete key
                 return "DELETE"
             elif key == b"\xe0":
-                return "CANCEL"
+                return "CANCEL"   # Cancel key (NOT SUPPORTED TODO!)
             elif key == b'\x13':
-                return "CTRL+s"
+                return "CTRL+s"   # Save
             elif key == b'\r':
-                return "ENTER"
+                return "ENTER"    # Enter, Newline
             return key.decode("utf-8")
 
 else:
@@ -89,11 +90,11 @@ else:
                 return "CTRL+w"
             elif ord(key) == 19:  # Save
                 return "CTRL+s"
-            elif ord(key) == 127:
+            elif ord(key) == 127: # Backspace/Delete key
                 return "DELETE"
-            elif ord(key) == 126:
+            elif ord(key) == 126: # Cancel key (NOT SUPPORTED TODO!)
                 return "CANCEL"
-            elif ord(key) == 13:
+            elif ord(key) == 13:  # Enter, Newline
                 return "ENTER"
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
@@ -150,6 +151,9 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
     file_vec_len = len(file_vec)
     file_vec_index = 0
 
+    while cursor_y >= file_vec_index + max_file_lines:
+        file_vec_index += 1
+
     print(path_to_file, end="")
     for i in range(max_string_length - len(path_to_file) - len("MAX: " + str(max_string_length))):
         print(" ", end="")
@@ -159,21 +163,27 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
     print("\n", end="")
 
     # PRINTER
-    while file_vec_index < file_vec_len:
+    i = 0
+    while i < max_file_lines:
         if cursor_y == file_vec_index:
             is_cursor_line = True
         else:
             is_cursor_line = False
 
-        file_line = file_vec[file_vec_index]
-        print(file_line)
+        if file_vec_index < len(file_vec):
+            try:
+                file_line = file_vec[file_vec_index]
+                print(file_line)
+            except:
+                print("")
 
-        if is_cursor_line:
-            print_cursor(file_line, cursor_x)
+            if is_cursor_line:
+                print_cursor(file_line, cursor_x)
         
         file_vec_index += 1
+        i += 1
     
-    print("\n\n\n")
+    print("")
     for i in range(max_string_length):
         print("=", end="")
     print("\n", end="")
@@ -224,6 +234,8 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
             index_1 += 1
             index_2 += 1
         file_vec = extend_file_vec(updated_file_vec)
+        cursor_y -= 1
+        cursor_x = len(file_vec[cursor_y])
     elif user_input == "ENTER":
         file_vec.insert(cursor_y + 1, file_vec[cursor_y][cursor_x:])
         file_vec[cursor_y] = file_vec[cursor_y][:cursor_x]
@@ -306,7 +318,7 @@ def start_editor(path_to_file):
 
 def main():
     try:
-    	start_editor(sys.argv[1])
+        start_editor(sys.argv[1])
     except:
         print("ERROR: Given path does not exist or is absent")
 
