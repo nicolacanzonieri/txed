@@ -233,9 +233,9 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
                 updated_file_vec[index_1] = merged_line
             index_1 += 1
             index_2 += 1
-        file_vec = extend_file_vec(updated_file_vec)
         cursor_y -= 1
         cursor_x = len(file_vec[cursor_y])
+        file_vec = extend_file_vec(updated_file_vec)
     elif user_input == "DELETE" and cursor_x == 0 and cursor_y == 0:
         None
     elif user_input == "ENTER":
