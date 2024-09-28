@@ -18,7 +18,7 @@ import sys
 import os
 
 from utils.file_util import file_to_vec, vec_to_file
-from utils.json_util import get_json_value
+from utils.data_util import get_data_value
 from utils.dir_util import get_path_to
 from utils.str_util import str_to_int
 
@@ -26,9 +26,9 @@ from utils.str_util import str_to_int
 '''
 SYSTEM VARIABLES
 '''
-sys_var_json_path = get_path_to("json sys_var.json")
-max_string_length = str_to_int(get_json_value(sys_var_json_path, 1))
-max_file_lines = str_to_int(get_json_value(sys_var_json_path, 2))
+sys_var_data_path = get_path_to("data sys_var.data")
+max_string_length = str_to_int(get_data_value(sys_var_data_path, 1))
+max_file_lines = str_to_int(get_data_value(sys_var_data_path, 2))
 
 
 '''
