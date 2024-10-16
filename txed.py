@@ -23,6 +23,9 @@ from utils.dir_util import get_path_to
 from utils.str_util import str_to_int
 
 
+from mod.control_set import set_controls 
+
+
 '''
 SYSTEM VARIABLES
 '''
@@ -40,6 +43,7 @@ if sys.platform == "win32":
     def get_key():
         while True:
             key = msvcrt.getch()
+            print(key)
             if key == b'\t':      # Up
                 return "CTRL+i"
             elif key == b'\x0c':  # Right
@@ -74,7 +78,10 @@ else:
         try:
             tty.setraw(fd)
             key = sys.stdin.read(1)
-            if ord(key) == 9:     # Up
+            print(ord(key))
+            if ord(key) == 5:     # CTRL+E
+                return "CTRL+E"
+            elif ord(key) == 9:     # Up
                 return "CTRL+i"
             elif ord(key) == 12:  # Right
                 return "CTRL+l"
@@ -291,7 +298,7 @@ def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
             user_input = get_key()
         except:
             user_input = ""
-        clear_terminal()
+        #clear_terminal()
 
         # USER INPUT HANDLER
         if user_input == "CTRL+w":
