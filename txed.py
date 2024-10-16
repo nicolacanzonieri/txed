@@ -209,7 +209,9 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
     @param "cursor_x" : cursor x position
     @param "cursor_y" : cursor y position
     '''
-    if user_input == "CTRL+i":
+    if user_input == "CTRL+e":
+        set_controls(max_string_length)
+    elif user_input == "CTRL+i":
         cursor_y -= 1
     elif user_input == "CTRL+l":
         if cursor_x == len(file_vec[cursor_y]) and cursor_y < len(file_vec):
