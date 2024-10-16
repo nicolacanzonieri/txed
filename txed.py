@@ -23,9 +23,6 @@ from utils.dir_util import get_path_to
 from utils.str_util import str_to_int
 
 
-from mod.control_set import set_controls 
-
-
 '''
 SYSTEM VARIABLES
 '''
@@ -46,9 +43,7 @@ if sys.platform == "win32":
             key = msvcrt.getch()
             if debug:
                 print("\n\nPRESSED KEY" + str(key) + "\n\n")
-            if key == b'\x05':    # Control-Setter
-                return "CTRL+e"
-            elif key == b'\t':    # Up
+            if key == b'\t':    # Up
                 return "CTRL+i"
             elif key == b'\x0c':  # Right
                 return "CTRL+l"
@@ -84,9 +79,7 @@ else:
             key = sys.stdin.read(1)
             if debug:
                 print("\n\nPRESSED KEY" + str(key) + "\n\n")
-            if ord(key) == 5:     # Control-Setter
-                return "CTRL+e"
-            elif ord(key) == 9:   # Up
+            if ord(key) == 9:   # Up
                 return "CTRL+i"
             elif ord(key) == 12:  # Right
                 return "CTRL+l"
@@ -209,9 +202,7 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
     @param "cursor_x" : cursor x position
     @param "cursor_y" : cursor y position
     '''
-    if user_input == "CTRL+e":
-        set_controls(max_string_length)
-    elif user_input == "CTRL+i":
+    if user_input == "CTRL+i":
         cursor_y -= 1
     elif user_input == "CTRL+l":
         if cursor_x == len(file_vec[cursor_y]) and cursor_y < len(file_vec):
