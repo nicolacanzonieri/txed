@@ -49,17 +49,17 @@ if sys.platform == "win32":
                 print("\n\nPRESSED KEY" + str(key) + "\n\n")
             if key == b'\x05':    # Control-Setter
                 return "CTRL+e"
-            elif key == get_data_value(data_path, 3):    # Up
+            elif key == get_data_value(data_path, 3):   # Up
                 return "CTRL+i"
-            elif key == get_data_value(data_path, 9):  # Right
+            elif key == get_data_value(data_path, 9):   # Right
                 return "CTRL+l"
-            elif key == get_data_value(data_path, 5):  # Down
+            elif key == get_data_value(data_path, 5):   # Down
                 return "CTRL+k"
-            elif key == get_data_value(data_path, 7):    # Left
+            elif key == get_data_value(data_path, 7):   # Left
                 return "CTRL+j"
-            elif key == b'\x0f':  # Fast right
+            elif key == get_data_value(data_path, 13):  # Fast right
                 return "CTRL+o"
-            elif key == b'\x15':  # Fast left
+            elif key == get_data_value(data_path, 11):  # Fast left
                 return "CTRL+u"
             elif key == b'\x17':  # Close
                 return "CTRL+w"
@@ -82,22 +82,23 @@ else:
         old_settings = termios.tcgetattr(fd)
         try:
             tty.setraw(fd)
+            data_path = get_path_to("data sys_var.data")
             key = sys.stdin.read(1)
             if debug:
                 print("\n\nPRESSED KEY" + str(key) + "\n\n")
             if ord(key) == 5:     # Control-Setter
                 return "CTRL+e"
-            elif ord(key) == 9:   # Up
+            elif ord(key) == get_data_value(data_path, 4):   # Up
                 return "CTRL+i"
-            elif ord(key) == 12:  # Right
+            elif ord(key) == get_data_value(data_path, 10):  # Right
                 return "CTRL+l"
-            elif ord(key) == 11:  # Down
+            elif ord(key) == get_data_value(data_path, 6):  # Down
                 return "CTRL+k"
-            elif ord(key) == 10:  # Left
+            elif ord(key) == get_data_value(data_path, 8):  # Left
                 return "CTRL+j"
-            elif ord(key) == 15:  # Fast right
+            elif ord(key) == get_data_value(data_path, 14):  # Fast right
                 return "CTRL+o"
-            elif ord(key) == 21:  # Fast left
+            elif ord(key) == get_data_value(data_path, 12):  # Fast left
                 return "CTRL+u"
             elif ord(key) == 23:  # Close
                 return "CTRL+w"
@@ -300,7 +301,6 @@ def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
     while True:
         # PRINT USER INTERFACE
         print_ui(path_to_file, file_vec, cursor_x, cursor_y)
-        print(os.name)
 
         # USER KEY GETTER
         try:
