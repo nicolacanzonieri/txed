@@ -32,6 +32,7 @@ SYSTEM VARIABLES
 sys_var_data_path = get_path_to("data sys_var.data")
 max_string_length = str_to_int(get_data_value(sys_var_data_path, 1))
 max_file_lines = str_to_int(get_data_value(sys_var_data_path, 2))
+debug = False
 
 
 '''
@@ -43,8 +44,11 @@ if sys.platform == "win32":
     def get_key():
         while True:
             key = msvcrt.getch()
-            print(key)
-            if key == b'\t':      # Up
+            if debug:
+                print("\n\nPRESSED KEY" + str(key) + "\n\n")
+            if key == b'\x05':    # Control-Setter
+                return "CTRL+e"
+            elif key == b'\t':    # Up
                 return "CTRL+i"
             elif key == b'\x0c':  # Right
                 return "CTRL+l"
@@ -78,10 +82,11 @@ else:
         try:
             tty.setraw(fd)
             key = sys.stdin.read(1)
-            print(ord(key))
-            if ord(key) == 5:     # CTRL+E
-                return "CTRL+E"
-            elif ord(key) == 9:     # Up
+            if debug:
+                print("\n\nPRESSED KEY" + str(key) + "\n\n")
+            if ord(key) == 5:     # Control-Setter
+                return "CTRL+e"
+            elif ord(key) == 9:   # Up
                 return "CTRL+i"
             elif ord(key) == 12:  # Right
                 return "CTRL+l"
@@ -298,7 +303,9 @@ def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
             user_input = get_key()
         except:
             user_input = ""
-        #clear_terminal()
+        
+        if not debug:
+            clear_terminal()
 
         # USER INPUT HANDLER
         if user_input == "CTRL+w":
