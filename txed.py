@@ -43,18 +43,19 @@ if sys.platform == "win32":
 
     def get_key():
         while True:
+            data_path = get_path_to("data sys_var.data")
             key = msvcrt.getch()
             if debug:
                 print("\n\nPRESSED KEY" + str(key) + "\n\n")
             if key == b'\x05':    # Control-Setter
                 return "CTRL+e"
-            elif key == b'\t':    # Up
+            elif key == get_data_value(data_path, 3):    # Up
                 return "CTRL+i"
-            elif key == b'\x0c':  # Right
+            elif key == get_data_value(data_path, 9):  # Right
                 return "CTRL+l"
-            elif key == b'\x0b':  # Down
+            elif key == get_data_value(data_path, 5):  # Down
                 return "CTRL+k"
-            elif key == b'\n':    # Left
+            elif key == get_data_value(data_path, 7):    # Left
                 return "CTRL+j"
             elif key == b'\x0f':  # Fast right
                 return "CTRL+o"
@@ -299,6 +300,7 @@ def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
     while True:
         # PRINT USER INTERFACE
         print_ui(path_to_file, file_vec, cursor_x, cursor_y)
+        print(os.name)
 
         # USER KEY GETTER
         try:
