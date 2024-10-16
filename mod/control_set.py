@@ -59,34 +59,33 @@ def set_specific_control(max_string_length, control, label):
     while True:
         clear_terminal()
         title = "CHANGING CONTROL " + control
+        print(title, end="")
         for i in range(max_string_length - len(title) - len("MAX: " + str(max_string_length))):
             print(" ", end="")
-            print("MAX: " + str(max_string_length))
-            for i in range(max_string_length):
-                print("=", end="")
-            print("\n", end="")
+        print("MAX: " + str(max_string_length))
+        for i in range(max_string_length):
+            print("=", end="")
+        print("\n", end="")
         
         # PRINT
+        print("\n\n")
         print("To remap this navigation key, press Ctrl and then any key...")
         print("")
         print("CURRENT KEY: " + label)
-        if new_key != "":
+        if new_key == "":
             print("\n\n")
         else:
             print("NEWER KEY:   " + new_key)
             print("\n")
 
-        # USER KEY GETTER
-        try:
-            user_input = get_key()
-        except:
-            user_input = ""
-
-        print("")
         for i in range(max_string_length):
             print("=", end="")
         print("\n", end="")
-        print("[CTRL+W : Close TxEd , CTRL+S : Save file , CTRL+I/J/K/L/U/O : Move]")
+        print("[CTRL+W : End remapping]")
+
+        user_input = get_key()
+        if user_input == "CTRL+w":
+            break
 
 
 def set_controls(max_string_length):
@@ -113,11 +112,7 @@ def set_controls(max_string_length):
         print("\n", end="")
         print("[CTRL+W : Close Control-Setter]")
 
-        # USER KEY GETTER
-        try:
-            user_input = get_key()
-        except:
-            user_input = ""
+        user_input = get_key()
 
         if user_input == "1":
             set_specific_control(max_string_length, "UP", up_label)
