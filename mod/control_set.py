@@ -24,10 +24,10 @@ debug = False
 
 
 def clear_terminal():
-    '''
-    Clear terminal
-    '''
-    os.system("cls" if os.name == "nt" else "clear")
+		'''
+		Clear terminal
+		'''
+		os.system("cls" if os.name == "nt" else "clear")
 
 
 '''
@@ -41,9 +41,19 @@ if sys.platform == "win32":
             key = msvcrt.getch()
             if debug:
                 print("\n\nPRESSED KEY" + str(key) + "\n\n")
-            if key == b'\x17':  # Close
+            if key == b'\x05':    # Control-Setter
+                return "CTRL+e"
+            elif key == b'\x17':  # Close
                 return "CTRL+w"
-            return key.decode("utf-8")
+            elif key == b"\x08":  # Backspace/Delete key
+                return "DELETE"
+            elif key == b"\xe0":
+                return "CANCEL"   # Cancel key (NOT SUPPORTED TODO!)
+            elif key == b'\x13':
+                return "CTRL+s"   # Save
+            elif key == b'\r':
+                return "ENTER"    # Enter, Newline
+                return key.decode("utf-8")
 
 else:
     import tty
@@ -57,8 +67,18 @@ else:
             key = sys.stdin.read(1)
             if debug:
                 print("\n\nPRESSED KEY" + str(key) + "\n\n")
-            if ord(key) == 23:  # Close
+            if ord(key) == 5:     # Control-Setter
+                return "CTRL+e"
+            if ord(key) == 23:    # Close
                 return "CTRL+w"
+            elif ord(key) == 19:  # Save
+                return "CTRL+s"
+            elif ord(key) == 127: # Backspace/Delete key
+                return "DELETE"
+            elif ord(key) == 126: # Cancel key (NOT SUPPORTED TODO!)
+                return "CANCEL"
+            elif ord(key) == 13:  # Enter, Newline
+                return "ENTER"
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return key
@@ -66,6 +86,7 @@ else:
 
 def set_control(max_string_length, control, label):
     new_key = ""
+    warning_msg = ""
     while True:
         clear_terminal()
         title = "CHANGING CONTROL " + control
@@ -76,17 +97,35 @@ def set_control(max_string_length, control, label):
         print("To remap this navigation key, press Ctrl and then any key...")
         print("")
         print("CURRENT KEY: " + label)
-        if new_key == "":
+        if new_key == "" and warning_msg == "":
             print("\n\n")
-        else:
+        elif new_key != "" and warning_msg == "":
             print("NEWER KEY:   " + new_key)
+            print("\n")
+        elif new_key == "" and warning_msg != "":
+            print(warning_msg)
             print("\n")
 
         print_bottom_border(max_string_length, "[CTRL+W : End remapping]");
 
         user_input = get_key()
+
         if user_input == "CTRL+w":
             break
+        elif user_input == "CTRL+s":
+            warning_msg = "CTRL+S is already used to save files!"
+        elif user_input == "CTRL+e":
+            warning_msg = "CTRL+E is already used by the control setter!"
+        elif user_input == "DELETE":
+            warning_msg = "DELETE is a priority key!"
+        elif user_input == "CANCEL":
+            warning_msg = "CANCEL is a priority key!"
+        elif user_input == "ENTER":
+            warning_msg = "ENTER is a priority key!"
+        else:
+            warning_msg = ""
+            new_key = user_input
+
 
 
 def set_controls(max_string_length):

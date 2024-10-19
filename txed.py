@@ -305,7 +305,7 @@ def start_editor(path_to_file):
 	cursor_x = 0
 	cursor_y = 0
 	# TRANSFORM FILE TO A LIST
-	file_vec = extend_file_vec(file_to_vec(path_to_file))
+	file_vec = extend_file_vec(file_to_vec(path_to_file), max_string_length)
 	# START MAIN LOGIC
 	main_logic(path_to_file, file_vec, cursor_x, cursor_y)
 
