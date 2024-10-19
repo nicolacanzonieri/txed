@@ -1,0 +1,17 @@
+{
+	"TXED VARIABLES": "",
+	"max string length": "100",
+	"max_file_lines": "20",
+	"up_nt": "b'\t'",
+	"up_posix": "9",
+	"down_nt": "b'\x0b'",
+	"down_posix": "11",
+	"left_nt": "b'\n'",
+	"left_posix": "10",
+	"right_nt": "b'\x0c'",
+	"right_posix": "12",
+	"fast_left_nt": "b'\x15'",
+	"fast_left_posix": "21",
+	"fast_right_nt": "b'\x0f'",
+	"fast_right_posix": "15"
+}
