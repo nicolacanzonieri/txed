@@ -17,17 +17,11 @@ import sys
 import os
 
 
+from utils.os_util import clear_terminal
 from utils.ui_util import print_top_border, print_bottom_border
 
 
 debug = False
-
-
-def clear_terminal():
-		'''
-		Clear terminal
-		'''
-		os.system("cls" if os.name == "nt" else "clear")
 
 
 '''
@@ -85,6 +79,13 @@ else:
 
 
 def set_control(max_string_length, control, label):
+    '''
+    Change the key for a specific control
+
+    @param "max_string_length" : Integer with the maximum string length allowed
+    @param "control" : string with the name of the control that will be changed
+    @param "label" : label for the current control (for example CTRL+T)
+    '''
     new_key = ""
     warning_msg = ""
     while True:
@@ -129,6 +130,11 @@ def set_control(max_string_length, control, label):
 
 
 def set_controls(max_string_length):
+    '''
+    Start Control-Setter
+
+    @param "max_string_length" : Integer with the maximum string length allowed
+    '''
     title = "CONTROL-SETTER"
     while True:
         clear_terminal()
