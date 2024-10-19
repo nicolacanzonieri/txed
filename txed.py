@@ -21,6 +21,7 @@ from utils.file_util import file_to_vec, vec_to_file
 from utils.data_util import get_data_value
 from utils.dir_util import get_path_to
 from utils.str_util import str_to_int
+from utils.ui_util import print_top_border
 
 
 from mod.control_set import set_controls 
@@ -46,20 +47,20 @@ if sys.platform == "win32":
             data_path = get_path_to("data sys_var.data")
             key = msvcrt.getch()
             if debug:
-                print("\n\nPRESSED KEY" + str(key) + "\n\n")
+                print("\n\nPRESSED KEY: " + str(key) + "\n\n")
             if key == b'\x05':    # Control-Setter
                 return "CTRL+e"
-            elif key == get_data_value(data_path, 3):   # Up
+            elif str(key) == get_data_value(data_path, 3):   # Up
                 return "CTRL+i"
-            elif key == get_data_value(data_path, 9):   # Right
+            elif str(key) == get_data_value(data_path, 9):   # Right
                 return "CTRL+l"
-            elif key == get_data_value(data_path, 5):   # Down
+            elif str(key) == get_data_value(data_path, 5):   # Down
                 return "CTRL+k"
-            elif key == get_data_value(data_path, 7):   # Left
+            elif str(key) == get_data_value(data_path, 7):   # Left
                 return "CTRL+j"
-            elif key == get_data_value(data_path, 13):  # Fast right
+            elif str(key) == get_data_value(data_path, 13):  # Fast right
                 return "CTRL+o"
-            elif key == get_data_value(data_path, 11):  # Fast left
+            elif str(key) == get_data_value(data_path, 11):  # Fast left
                 return "CTRL+u"
             elif key == b'\x17':  # Close
                 return "CTRL+w"
@@ -85,20 +86,20 @@ else:
             data_path = get_path_to("data sys_var.data")
             key = sys.stdin.read(1)
             if debug:
-                print("\n\nPRESSED KEY" + str(key) + "\n\n")
+                print("\n\nPRESSED KEY: " + str(ord(key)) + "\n\n")
             if ord(key) == 5:     # Control-Setter
                 return "CTRL+e"
-            elif ord(key) == get_data_value(data_path, 4):   # Up
+            elif str(ord(key)) == get_data_value(data_path, 4):   # Up
                 return "CTRL+i"
-            elif ord(key) == get_data_value(data_path, 10):  # Right
+            elif str(ord(key)) == get_data_value(data_path, 10):  # Right
                 return "CTRL+l"
-            elif ord(key) == get_data_value(data_path, 6):  # Down
+            elif str(ord(key)) == get_data_value(data_path, 6):  # Down
                 return "CTRL+k"
-            elif ord(key) == get_data_value(data_path, 8):  # Left
+            elif str(ord(key)) == get_data_value(data_path, 8):  # Left
                 return "CTRL+j"
-            elif ord(key) == get_data_value(data_path, 14):  # Fast right
+            elif str(ord(key)) == get_data_value(data_path, 14):  # Fast right
                 return "CTRL+o"
-            elif ord(key) == get_data_value(data_path, 12):  # Fast left
+            elif str(ord(key)) == get_data_value(data_path, 12):  # Fast left
                 return "CTRL+u"
             elif ord(key) == 23:  # Close
                 return "CTRL+w"
@@ -126,7 +127,8 @@ def extend_file_vec(file_vec) -> list:
     '''
     Returns a list of sentences extracted from the provided file, where each sentence is either shorter than or equal 
     to the specified maximum length. Sentences exceeding the limit are split into multiple elements.
-    @param "file_vec" : The original list of strings representing file contents (potentially containing long sentences).
+    @param "file_vec" : The original list of strings representing file contents (potentially containing 
+                        long sentences).
     '''
     vec_index = 0
     while vec_index < len(file_vec):
@@ -156,29 +158,26 @@ def print_cursor(line, cursor_x):
 
 
 def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
-    '''
-    Print UI
-    @param "file_vec" : the list obtained from the file (file_to_vec)
-    @param "cursor_x" : cursor x position
-    @param "cursor_y" : cursor y position
-    '''
-    file_vec_len = len(file_vec)
-    file_vec_index = 0
+	'''
+	Print UI
+	@param "file_vec" : the list obtained from the file (file_to_vec)
+	@param "cursor_x" : cursor x position
+	@param "cursor_y" : cursor y position
+	'''
+	file_vec_len = len(file_vec)
+	file_vec_index = 0
 
-    while cursor_y >= file_vec_index + max_file_lines:
-        file_vec_index += 1
-
-    print(path_to_file, end="")
-    for i in range(max_string_length - len(path_to_file) - len("MAX: " + str(max_string_length))):
-        print(" ", end="")
-    print("MAX: " + str(max_string_length))
-    for i in range(max_string_length):
-        print("=", end="")
-    print("\n", end="")
-
+	while cursor_y >= file_vec_index + max_file_lines:
+		file_vec_index += 1
+	
+	try:
+		print_top_border(max_string_length, path_to_file)
+	except:
+		print("ERROR: can't print top border UI")
+    
     # PRINTER
-    i = 0
-    while i < max_file_lines:
+	i = 0
+	while i < max_file_lines:
         if cursor_y == file_vec_index:
             is_cursor_line = True
         else:
@@ -340,7 +339,7 @@ def main():
     try:
         start_editor(sys.argv[1])
     except:
-        print("ERROR: Given path does not exist or is absent")
+        print("ERROR: can't open TxEd")
 
 
 main()

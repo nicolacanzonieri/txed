@@ -2,24 +2,12 @@
 FILE UTIL
 
 Index:
-- file_to_str()
 - file_to_vec()
 - vec_to_file()
 '''
 
 
 from utils.dir_util import create_file
-
-
-def file_to_str(path_to_file) -> str:
-    '''
-    Return a string containing a text file located on a specified path
-    
-    @param "path_to_file" : a string containing the path to a file
-    '''
-    with open(path_to_file, "r") as file:
-        file_lines = file.read()
-        return file_lines
     
 
 def file_to_vec(path_to_file) -> list:
