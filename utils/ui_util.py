@@ -19,6 +19,6 @@ def print_top_border(max_string_length, title):
 
 def print_bottom_border(max_string_length, title):
 	for i in range(max_string_length):
-            print("=", end="")
-        print("\n", end="")
+		print("=", end="")
+	print("\n", end="")
 	print(title)
