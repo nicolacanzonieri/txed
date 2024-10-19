@@ -21,7 +21,7 @@ from utils.file_util import file_to_vec, vec_to_file
 from utils.data_util import get_data_value
 from utils.dir_util import get_path_to
 from utils.str_util import str_to_int
-from utils.ui_util import print_top_border
+from utils.ui_util import print_top_border, print_bottom_border
 
 
 from mod.control_set import set_controls 

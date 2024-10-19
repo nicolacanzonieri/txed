@@ -1,3 +1,12 @@
+'''
+CONTROL SETTER
+
+Index:
+- set_control()
+- set_controls()
+'''
+
+
 up_label = ""
 down_label = ""
 left_label = ""
@@ -7,7 +16,8 @@ right_label = ""
 import sys
 import os
 
-from utils.data_util import *
+
+from utils.ui_util import print_top_border, print_bottom_border
 
 
 debug = False
@@ -54,18 +64,12 @@ else:
         return key
 
 
-def set_specific_control(max_string_length, control, label):
+def set_control(max_string_length, control, label):
     new_key = ""
     while True:
         clear_terminal()
         title = "CHANGING CONTROL " + control
-        print(title, end="")
-        for i in range(max_string_length - len(title) - len("MAX: " + str(max_string_length))):
-            print(" ", end="")
-        print("MAX: " + str(max_string_length))
-        for i in range(max_string_length):
-            print("=", end="")
-        print("\n", end="")
+        print_top_border(max_string_length, title)
         
         # PRINT
         print("\n\n")
@@ -78,10 +82,7 @@ def set_specific_control(max_string_length, control, label):
             print("NEWER KEY:   " + new_key)
             print("\n")
 
-        for i in range(max_string_length):
-            print("=", end="")
-        print("\n", end="")
-        print("[CTRL+W : End remapping]")
+        print_bottom_border(max_string_length, "[CTRL+W : End remapping]");
 
         user_input = get_key()
         if user_input == "CTRL+w":
@@ -115,13 +116,13 @@ def set_controls(max_string_length):
         user_input = get_key()
 
         if user_input == "1":
-            set_specific_control(max_string_length, "UP", up_label)
+            set_control(max_string_length, "UP", up_label)
         elif user_input == "2":
-            set_specific_control(max_string_length, "DOWN", down_label)
+            set_control(max_string_length, "DOWN", down_label)
         elif user_input == "3":
-            set_specific_control(max_string_length, "LEFT", left_label)
+            set_control(max_string_length, "LEFT", left_label)
         elif user_input == "3":
-            set_specific_control(max_string_length, "RIGHT", right_label)
+            set_control(max_string_length, "RIGHT", right_label)
         elif user_input == "CTRL+w":
             clear_terminal()
             break
