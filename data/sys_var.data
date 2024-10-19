@@ -1,7 +1,7 @@
 {
 	"TXED VARIABLES": "",
-	"max string length": "70",
-	"max_file_lines": "15",
+	"max string length": "100",
+	"max_file_lines": "20",
 	"up_nt": "b'\t'",
 	"up_posix": "9",
 	"down_nt": "b'\x0b'",
