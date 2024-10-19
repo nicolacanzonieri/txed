@@ -5,8 +5,6 @@ By Nicola Canzonieri - 2024
 
 Index:
 - get_key()
-- clear_terminal()
-- extend_file_vec()
 - print_cursor()
 - print_ui()
 - input_handler()
@@ -17,9 +15,10 @@ Index:
 import sys
 import os
 
-from utils.file_util import file_to_vec, vec_to_file
 from utils.data_util import get_data_value
 from utils.dir_util import get_path_to
+from utils.file_util import file_to_vec, vec_to_file, extend_file_vec
+from utils.os_util import clear_terminal
 from utils.str_util import str_to_int
 from utils.ui_util import print_top_border, print_bottom_border
 
@@ -115,30 +114,6 @@ else:
 			termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 		return key
 
-
-def clear_terminal():
-	'''
-	Clear terminal
-	'''
-	os.system("cls" if os.name == "nt" else "clear")
-
-
-def extend_file_vec(file_vec) -> list:
-	'''
-	Returns a list of sentences extracted from the provided file, where each sentence is either shorter than or equal 
-	to the specified maximum length. Sentences exceeding the limit are split into multiple elements.
-	@param "file_vec" : The original list of strings representing file contents (potentially containing 
-						long sentences).
-	'''
-	vec_index = 0
-	while vec_index < len(file_vec):
-		line = file_vec[vec_index]
-		if len(line) > max_string_length:
-			file_vec[vec_index] = file_vec[vec_index][ : max_string_length]
-			file_vec.insert(vec_index + 1, line[max_string_length : ])
-		vec_index += 1
-	return file_vec
-			
 
 def print_cursor(line, cursor_x):
 	'''
@@ -250,7 +225,7 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
 			index_2 += 1
 		cursor_y -= 1
 		cursor_x = len(file_vec[cursor_y])
-		file_vec = extend_file_vec(updated_file_vec)
+		file_vec = extend_file_vec(updated_file_vec, max_string_length)
 	elif user_input == "DELETE" and cursor_x == 0 and cursor_y == 0:
 		None
 	elif user_input == "ENTER":

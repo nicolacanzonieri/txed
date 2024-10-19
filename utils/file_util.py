@@ -5,6 +5,7 @@ Index:
 - file_to_str()
 - file_to_vec()
 - vec_to_file()
+- extend_file_vec()
 '''
 
 
@@ -57,3 +58,20 @@ def vec_to_file(path_to_file, file_vec):
     for line in file_vec:
         new_file_text += line + "\n"
     create_file(path_to_file, new_file_text)
+
+
+def extend_file_vec(file_vec, limit) -> list:
+	'''
+	Returns a list of sentences extracted from the provided file, where each sentence is either shorter than 
+	or equal to the specified maximum length. Sentences exceeding the limit are split into multiple elements.
+	@param "file_vec" : The original list of strings representing file contents (potentially containing 
+						long sentences).
+	'''
+	vec_index = 0
+	while vec_index < len(file_vec):
+		line = file_vec[vec_index]
+		if len(line) > limit:
+			file_vec[vec_index] = file_vec[vec_index][ : limit]
+			file_vec.insert(vec_index + 1, line[limit : ])
+		vec_index += 1
+	return file_vec
