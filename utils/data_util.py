@@ -3,7 +3,7 @@ JSON UTIL
 
 Index:
 - data_to_vec()
-- get_data_value(
+- get_data_value()
 '''
 
 
@@ -57,3 +57,23 @@ def get_data_value(path_to_data, value_id) -> str:
     '''
     data_vec = data_to_vec(path_to_data)
     return data_vec[value_id]
+
+
+def edit_data(path_to_data, row, new_value):
+    '''
+    Edit a data file with a different value in a specified row
+    
+    @param "path_to_data" : a string containing the path to a .data file
+    @param "row" : the row where to insert the new value. Remember that rows start from 0!
+    @param "new_value" : the new value to insert. This parameter must have the following syntax: '"Example"'
+    '''
+    file_vec = file_to_vec(path_to_data)
+    for char_index, char in enumerate(file_vec[row]):
+        if file_vec[row][char_index] == ':':
+            file_vec[row] = file_vec[row][: char_index + 1] + " " + new_value
+            # If the json contains multiple values and the modified row is not the last one (containing data)
+            # than we have to add the ',' character at the end of the data
+            if len(file_vec) > 3 and row < len(file_vec) - 2:
+                file_vec[row] += ","
+            break
+    vec_to_file(path_to_data, file_vec)

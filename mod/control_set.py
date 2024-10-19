@@ -17,6 +17,8 @@ import sys
 import os
 
 
+from utils.data_util import edit_data
+from utils.dir_util import get_path_to
 from utils.os_util import clear_terminal
 from utils.ui_util import print_top_border, print_bottom_border
 
@@ -107,14 +109,23 @@ def set_control(max_string_length, control, label):
             print(warning_msg)
             print("\n")
 
-        print_bottom_border(max_string_length, "[CTRL+W : End remapping]");
+        print_bottom_border(max_string_length, "[CTRL+W : End remapping, CTRL+S : Save current key]")
 
         user_input = get_key()
+
+        if control == "UP":
+            data_row = 4 if os.name == "nt" else 5
+        elif control == "DOWN":
+            data_row = 6 if os.name == "nt" else 7
+        elif control == "LEFT":
+            data_row = 8 if os.name == "nt" else 9
+        elif control == "RIGHT":
+            data_row = 10 if os.name == "nt" else 11
 
         if user_input == "CTRL+w":
             break
         elif user_input == "CTRL+s":
-            warning_msg = "CTRL+S is already used to save files!"
+            edit_data(get_path_to("data sys_var.data"), data_row, "'" + user_input + "'")
         elif user_input == "CTRL+e":
             warning_msg = "CTRL+E is already used by the control setter!"
         elif user_input == "DELETE":
