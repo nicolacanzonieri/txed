@@ -25,7 +25,7 @@ from utils.os_util import clear_terminal
 from utils.ui_util import print_top_border, print_bottom_border
 
 
-debug = True
+debug = False
 
 
 '''
@@ -39,19 +39,20 @@ if sys.platform == "win32":
             key = msvcrt.getch()
             if debug:
                 print("\n\nPRESSED KEY: " + str(key) + "\n\n")
+            og_key = key
             if key == b'\x05':    # Control-Setter
-                return "CTRL+e"
+                return ["CTRL+e", og_key]
             elif key == b'\x17':  # Close
-                return "CTRL+w"
+                return ["CTRL+w", og_key]
             elif key == b"\x08":  # Backspace/Delete key
-                return "DELETE"
-            elif key == b"\xe0":
-                return "CANCEL"   # Cancel key (NOT SUPPORTED TODO!)
-            elif key == b'\x13':
-                return "CTRL+s"   # Save
-            elif key == b'\r':
-                return "ENTER"    # Enter, Newline
-            return key.decode("utf-8")
+                return ["DELETE", og_key]
+            elif key == b"\xe0":  # Cancel key (NOT SUPPORTED TODO!)
+                return ["CANCEL", og_key]
+            elif key == b'\x13':  # Save
+                return ["CTRL+s", og_key]
+            elif key == b'\r':    # Enter, Newline
+                return ["ENTER", og_key]
+            return [key.decode("utf-8"), og_key]
 
 else:
     import tty
@@ -63,23 +64,24 @@ else:
         try:
             tty.setraw(fd)
             key = sys.stdin.read(1)
+            og_key = ord(key)
             if debug:
-                print("\n\nPRESSED KEY" + str(key) + "\n\n")
+                print("\n\nPRESSED KEY: " + str(ord(key)) + "\n\n")
             if ord(key) == 5:     # Control-Setter
-                return "CTRL+e"
+                return ["CTRL+e", og_key]
             if ord(key) == 23:    # Close
-                return "CTRL+w"
+                return ["CTRL+w", og_key]
             elif ord(key) == 19:  # Save
-                return "CTRL+s"
+                return ["CTRL+s", og_key]
             elif ord(key) == 127: # Backspace/Delete key
-                return "DELETE"
+                return ["DELETE", og_key]
             elif ord(key) == 126: # Cancel key (NOT SUPPORTED TODO!)
-                return "CANCEL"
+                return ["CANCEL", og_key]
             elif ord(key) == 13:  # Enter, Newline
-                return "ENTER"
+                return ["ENTER", og_key]
+            return [key, og_key]
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-        return key
 
 
 def set_control(max_string_length, control, label):
@@ -105,7 +107,7 @@ def set_control(max_string_length, control, label):
         if new_key == "" and warning_msg == "":
             print("\n\n")
         elif new_key != "" and warning_msg == "":
-            print("NEWER KEY:   " + new_key)
+            print("NEWER KEY:   " + str(new_key))
             print("\n")
         elif new_key == "" and warning_msg != "":
             print(warning_msg)
@@ -128,25 +130,25 @@ def set_control(max_string_length, control, label):
         elif control == "FAST RIGHT":
             data_row = 14 if os.name == "nt" else 15
 
-        if user_input == "CTRL+w":
+        if user_input[0] == "CTRL+w":
             break
-        elif user_input == "CTRL+s":
+        elif user_input[0] == "CTRL+s":
             edit_data(get_path_to("data sys_var.data"), data_row, "'" + user_input + "'")
-        elif user_input == "CTRL+e":
+        elif user_input[0]== "CTRL+e":
             warning_msg = "CTRL+E is already used by the control setter!"
             new_key = ""
-        elif user_input == "DELETE":
+        elif user_input[0] == "DELETE":
             warning_msg = "DELETE is a priority key!"
             new_key = ""
-        elif user_input == "CANCEL":
+        elif user_input[0] == "CANCEL":
             warning_msg = "CANCEL is a priority key!"
             new_key = ""
-        elif user_input == "ENTER":
+        elif user_input[0] == "ENTER":
             warning_msg = "ENTER is a priority key!"
             new_key = ""
         else:
             warning_msg = ""
-            new_key = str(ord(user_input)) if os.name == "nt" else str(user_input)
+            new_key = user_input[1] if os.name == "nt" else user_input[1]
 
 
 
@@ -168,7 +170,7 @@ def set_controls(max_string_length):
         print("\n", end="")
 
         # PRINT
-        print("[1] : UP = " + up_label)
+        print("[1] : UP = " + up_label) 
         print("[2] : DOWN = " + down_label)
         print("[3] : LEFT = " + left_label)
         print("[4] : RIGHT = " + right_label)
@@ -183,18 +185,18 @@ def set_controls(max_string_length):
 
         user_input = get_key()
 
-        if user_input == "1" or user_input == b'1':
+        if user_input[0] == "1" or user_input[0] == b'1':
             set_control(max_string_length, "UP", up_label)
-        elif user_input == "2" or user_input == b'2':
+        elif user_input[0] == "2" or user_input[0] == b'2':
             set_control(max_string_length, "DOWN", down_label)
-        elif user_input == "3" or user_input == b'3':
+        elif user_input[0] == "3" or user_input[0] == b'3':
             set_control(max_string_length, "LEFT", left_label)
-        elif user_input == "4" or user_input == b'4':
+        elif user_input[0] == "4" or user_input[0] == b'4':
             set_control(max_string_length, "RIGHT", right_label)
-        elif user_input == "5" or user_input == b'5':
+        elif user_input[0] == "5" or user_input[0] == b'5':
             set_control(max_string_length, "FAST LEFT", fast_left_label)
-        elif user_input == "6" or user_input == b'6':
+        elif user_input[0] == "6" or user_input[0] == b'6':
             set_control(max_string_length, "FAST RIGHT", fast_right_label)
-        elif user_input == "CTRL+w":
+        elif user_input[0] == "CTRL+w":
             clear_terminal()
             break
