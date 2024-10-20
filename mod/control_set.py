@@ -25,7 +25,7 @@ from utils.os_util import clear_terminal
 from utils.ui_util import print_top_border, print_bottom_border
 
 
-debug = False
+debug = True
 
 
 '''
@@ -38,7 +38,7 @@ if sys.platform == "win32":
         while True:
             key = msvcrt.getch()
             if debug:
-                print("\n\nPRESSED KEY" + str(key) + "\n\n")
+                print("\n\nPRESSED KEY: " + str(key) + "\n\n")
             if key == b'\x05':    # Control-Setter
                 return "CTRL+e"
             elif key == b'\x17':  # Close
@@ -51,7 +51,7 @@ if sys.platform == "win32":
                 return "CTRL+s"   # Save
             elif key == b'\r':
                 return "ENTER"    # Enter, Newline
-                return key.decode("utf-8")
+            return key.decode("utf-8")
 
 else:
     import tty
@@ -182,19 +182,18 @@ def set_controls(max_string_length):
         print("[CTRL+W : Close Control-Setter]")
 
         user_input = get_key()
-        print(user_input)
 
-        if user_input == "1":
+        if user_input == "1" or user_input == b'1':
             set_control(max_string_length, "UP", up_label)
-        elif user_input == "2":
+        elif user_input == "2" or user_input == b'2':
             set_control(max_string_length, "DOWN", down_label)
-        elif user_input == "3":
+        elif user_input == "3" or user_input == b'3':
             set_control(max_string_length, "LEFT", left_label)
-        elif user_input == "4":
+        elif user_input == "4" or user_input == b'4':
             set_control(max_string_length, "RIGHT", right_label)
-        elif user_input == "5":
+        elif user_input == "5" or user_input == b'5':
             set_control(max_string_length, "FAST LEFT", fast_left_label)
-        elif user_input == "6":
+        elif user_input == "6" or user_input == b'6':
             set_control(max_string_length, "FAST RIGHT", fast_right_label)
         elif user_input == "CTRL+w":
             clear_terminal()
