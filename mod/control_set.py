@@ -117,6 +117,7 @@ def set_control(max_string_length, control, label):
 
         user_input = get_key()
 
+        # DETECT DATA ROW
         if control == "UP":
             data_row = 4 if os.name == "nt" else 5
         elif control == "DOWN":
@@ -130,6 +131,7 @@ def set_control(max_string_length, control, label):
         elif control == "FAST RIGHT":
             data_row = 14 if os.name == "nt" else 15
 
+        # SET UI MESSAGES
         if user_input[0] == "CTRL+w":
             break
         elif user_input[0] == "CTRL+s":
