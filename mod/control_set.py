@@ -133,7 +133,7 @@ def set_control(max_string_length, control, label):
         if user_input[0] == "CTRL+w":
             break
         elif user_input[0] == "CTRL+s":
-            edit_data(get_path_to("data sys_var.data"), data_row, "'" + user_input + "'")
+            edit_data(get_path_to("data sys_var.data"), data_row, "'" + str(user_input[1]) + "'")
         elif user_input[0]== "CTRL+e":
             warning_msg = "CTRL+E is already used by the control setter!"
             new_key = ""
@@ -149,7 +149,6 @@ def set_control(max_string_length, control, label):
         else:
             warning_msg = ""
             new_key = user_input[1] if os.name == "nt" else user_input[1]
-
 
 
 def set_controls(max_string_length):
