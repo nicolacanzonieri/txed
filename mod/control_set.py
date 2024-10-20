@@ -11,6 +11,8 @@ up_label = ""
 down_label = ""
 left_label = ""
 right_label = ""
+fast_right_label = ""
+fast_left_label = ""
 
 
 import sys
@@ -109,7 +111,7 @@ def set_control(max_string_length, control, label):
             print(warning_msg)
             print("\n")
 
-        print_bottom_border(max_string_length, "[CTRL+W : End remapping, CTRL+S : Save current key]")
+        print_bottom_border(max_string_length, "[CTRL+W : End remapping , CTRL+S : Save current key]")
 
         user_input = get_key()
 
@@ -121,6 +123,10 @@ def set_control(max_string_length, control, label):
             data_row = 8 if os.name == "nt" else 9
         elif control == "RIGHT":
             data_row = 10 if os.name == "nt" else 11
+        elif control == "FAST LEFT":
+            data_row = 12 if os.name == "nt" else 13
+        elif control == "FAST RIGHT":
+            data_row = 14 if os.name == "nt" else 15
 
         if user_input == "CTRL+w":
             break
@@ -128,15 +134,19 @@ def set_control(max_string_length, control, label):
             edit_data(get_path_to("data sys_var.data"), data_row, "'" + user_input + "'")
         elif user_input == "CTRL+e":
             warning_msg = "CTRL+E is already used by the control setter!"
+            new_key = ""
         elif user_input == "DELETE":
             warning_msg = "DELETE is a priority key!"
+            new_key = ""
         elif user_input == "CANCEL":
             warning_msg = "CANCEL is a priority key!"
+            new_key = ""
         elif user_input == "ENTER":
             warning_msg = "ENTER is a priority key!"
+            new_key = ""
         else:
             warning_msg = ""
-            new_key = user_input
+            new_key = str(ord(user_input)) if os.name == "nt" else str(user_input)
 
 
 
@@ -162,6 +172,8 @@ def set_controls(max_string_length):
         print("[2] : DOWN = " + down_label)
         print("[3] : LEFT = " + left_label)
         print("[4] : RIGHT = " + right_label)
+        print("[5] : FAST LEFT = " + fast_left_label)
+        print("[6] : FAST RIGHT = " + fast_right_label)
 
         print("")
         for i in range(max_string_length):
@@ -170,6 +182,7 @@ def set_controls(max_string_length):
         print("[CTRL+W : Close Control-Setter]")
 
         user_input = get_key()
+        print(user_input)
 
         if user_input == "1":
             set_control(max_string_length, "UP", up_label)
@@ -177,8 +190,12 @@ def set_controls(max_string_length):
             set_control(max_string_length, "DOWN", down_label)
         elif user_input == "3":
             set_control(max_string_length, "LEFT", left_label)
-        elif user_input == "3":
+        elif user_input == "4":
             set_control(max_string_length, "RIGHT", right_label)
+        elif user_input == "5":
+            set_control(max_string_length, "FAST LEFT", fast_left_label)
+        elif user_input == "6":
+            set_control(max_string_length, "FAST RIGHT", fast_right_label)
         elif user_input == "CTRL+w":
             clear_terminal()
             break

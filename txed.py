@@ -175,7 +175,7 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
 	for i in range(max_string_length):
 		print("=", end="")
 	print("\n", end="")
-	print("[CTRL+W : Close TxEd , CTRL+S : Save file , CTRL+I/J/K/L/U/O : Move]")
+	print("[CTRL+W : Close TxEd , CTRL+S : Save file , CTRL+E : Change controls , CTRL+I/J/K/L/U/O : Move]")
 
 
 def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
