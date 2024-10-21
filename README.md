@@ -40,6 +40,22 @@ py txed.py <file_path>
 
 Replace `<file_path>` with the path to the file you want to edit or create.
 
+## Useful tips
+
+In some projects, there may be files that are part of the repository but 
+should not be modified or committed every time they are changed locally. For 
+example, configuration or data files that are user-specific might need to be 
+excluded from Git's list of modified files. One such file could be 
+`data/sys_var.data`.
+
+To avoid Git tracking modifications to `data/sys_var.data`, you can type:
+
+```git update-index --assume-unchanged data/sys_var.data```
+
+If you want to restore this option use:
+
+```git update-index --no-assume-unchanged data/sys_var.data```
+
 ## Contributing
 
 TxEd is an open-source project and welcomes contributions from the community. 
