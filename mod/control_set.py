@@ -214,8 +214,8 @@ def set_controls(max_string_length):
         down_label = get_data_value(get_path_to("data sys_var.data"), 16)
         left_label = get_data_value(get_path_to("data sys_var.data"), 17)
         right_label = get_data_value(get_path_to("data sys_var.data"), 18)
-        fast_right_label = get_data_value(get_path_to("data sys_var.data"), 19)
-        fast_left_label = get_data_value(get_path_to("data sys_var.data"), 20)
+        fast_left_label = get_data_value(get_path_to("data sys_var.data"), 19)
+        fast_right_label = get_data_value(get_path_to("data sys_var.data"), 20)
 
         clear_terminal()
         print(title, end="")
