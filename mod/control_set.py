@@ -2,6 +2,7 @@
 CONTROL SETTER
 
 Index:
+- set_label_and_quit()
 - set_control()
 - set_controls()
 '''
@@ -89,8 +90,9 @@ def set_label_and_quit(max_string_length, data_value, data_row, data_label_row):
     Set the label for a specific control
 
     @param "max_string_length" : Integer with the maximum string length allowed
-    @param "control" : string with the name of the control that will be changed
-    @param "label" : label for the current control (for example CTRL+T)
+    @param "data_value" : TODO!
+    @param "data_row" : TODO!
+    @param "data_label_row" : TODO!
     '''
 
     new_label = ""
