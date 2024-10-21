@@ -7,19 +7,19 @@ Index:
 '''
 
 
-up_label = ""
-down_label = ""
-left_label = ""
-right_label = ""
-fast_right_label = ""
-fast_left_label = ""
+up_label = get_data_value(get_path_to("data sys_var.data"), 15)
+down_label = get_data_value(get_path_to("data sys_var.data"), 16)
+left_label = get_data_value(get_path_to("data sys_var.data"), 17)
+right_label = get_data_value(get_path_to("data sys_var.data"), 18)
+fast_right_label = get_data_value(get_path_to("data sys_var.data"), 19)
+fast_left_label = get_data_value(get_path_to("data sys_var.data"), 20)
 
 
 import sys
 import os
 
 
-from utils.data_util import edit_data
+from utils.data_util import edit_data, get_data_value
 from utils.dir_util import get_path_to
 from utils.os_util import clear_terminal
 from utils.ui_util import print_top_border, print_bottom_border
@@ -37,9 +37,9 @@ if sys.platform == "win32":
     def get_key():
         while True:
             key = msvcrt.getch()
-            if debug:
-                print("\n\nPRESSED KEY: " + str(key) + "\n\n")
             og_key = key
+            if debug:
+                print("\n\nPRESSED KEY: [" + str(key) + ", " + str(og_key) + "]" + "\n\n")
             if key == b'\x05':    # Control-Setter
                 return ["CTRL+e", og_key]
             elif key == b'\x17':  # Close
@@ -66,7 +66,7 @@ else:
             key = sys.stdin.read(1)
             og_key = ord(key)
             if debug:
-                print("\n\nPRESSED KEY: " + str(ord(key)) + "\n\n")
+                print("\n\nPRESSED KEY: [" + str(ord(key)) + ", " + str(og_key) + "]" + "\n\n")
             if ord(key) == 5:     # Control-Setter
                 return ["CTRL+e", og_key]
             if ord(key) == 23:    # Close
@@ -82,6 +82,44 @@ else:
             return [key, og_key]
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
+
+def set_label_and_quit(max_string_length, data_value, data_row, data_label_row):
+    '''
+    Set the label for a specific control
+
+    @param "max_string_length" : Integer with the maximum string length allowed
+    @param "control" : string with the name of the control that will be changed
+    @param "label" : label for the current control (for example CTRL+T)
+    '''
+
+    new_label = ""
+    while True:
+        clear_terminal()
+        print_top_border(max_string_length, "SET LABEL")
+        print('Insert the label for the new command (for example "CTRL+U"): ' + str(new_label))
+        print("\n")
+        print_bottom_border(max_string_length, "[CTRL+W : Quit (without saving) , CTRL+S : Save and Quit]")
+
+        user_input = get_key()
+
+        if user_input[0] == "CTRL+s":
+            new_label = "'" + str(new_label) + "'"
+            edit_data(get_path_to("data sys_var.data"), data_row, data_value)
+            edit_data(get_path_to("data sys_var.data"), data_label_row, new_label)
+            break
+        elif user_input[0] == "CTRL+w":
+            break
+        elif user_input[0] == "DELETE":
+            new_label = new_label[:len(new_label)-1]
+        elif user_input[0] == "CANCEL":
+            None
+        elif user_input[0] == "ENTER":
+            None
+        elif user_input[0] == "CTRL+e":
+            None
+        else:
+            new_label += user_input[0]
 
 
 def set_control(max_string_length, control, label):
@@ -103,11 +141,11 @@ def set_control(max_string_length, control, label):
         print("\n\n")
         print("To remap this navigation key, press Ctrl and then any key...")
         print("")
-        print("CURRENT KEY: " + label)
+        print("CURRENT LABEL:  " + label)
         if new_key == "" and warning_msg == "":
             print("\n\n")
         elif new_key != "" and warning_msg == "":
-            print("NEWER KEY:   " + str(new_key))
+            print("NEWER KEY CODE: " + str(new_key))
             print("\n")
         elif new_key == "" and warning_msg != "":
             print(warning_msg)
@@ -120,22 +158,30 @@ def set_control(max_string_length, control, label):
         # DETECT DATA ROW
         if control == "UP":
             data_row = 4 if os.name == "nt" else 5
+            data_label_row = 16
         elif control == "DOWN":
             data_row = 6 if os.name == "nt" else 7
+            data_label_row = 17
         elif control == "LEFT":
             data_row = 8 if os.name == "nt" else 9
+            data_label_row = 18
         elif control == "RIGHT":
             data_row = 10 if os.name == "nt" else 11
+            data_label_row = 19
         elif control == "FAST LEFT":
             data_row = 12 if os.name == "nt" else 13
+            data_label_row = 20
         elif control == "FAST RIGHT":
             data_row = 14 if os.name == "nt" else 15
+            data_label_row = 21
 
         # SET UI MESSAGES
         if user_input[0] == "CTRL+w":
             break
         elif user_input[0] == "CTRL+s":
-            edit_data(get_path_to("data sys_var.data"), data_row, "'" + str(user_input[1]) + "'")
+            data_value = "'" + str(new_key) + "'"
+            set_label_and_quit(max_string_length, data_value, data_row, data_label_row)
+            break
         elif user_input[0]== "CTRL+e":
             warning_msg = "CTRL+E is already used by the control setter!"
             new_key = ""
