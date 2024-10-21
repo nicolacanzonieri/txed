@@ -1,21 +1,26 @@
-# txed
+# TxEd
 
-TxEd is a text editor written in Python that doesn't require any external pip packages.
+TxEd is a lightweight text editor written in Python that does not rely on any 
+external `pip` packages.
 
 ## Overview
 
-Born as a small university project, TxEd has grown into a functional and practical program. 
+Originally created as a small university project, TxEd has since evolved into 
+a functional and practical program.
 
-While not exhaustive in features, it serves its purpose effectively, making it ideal for devices 
-that, for various reasons, are not compatible with 'pip' or some external libraries.
+Though it lacks some advanced features, TxEd fulfills its role effectively, 
+making it an ideal choice for devices that, for various reasons, cannot use 
+`pip` or external libraries.
 
-TxEd can be also included inside other softwares.
+Additionally, TxEd can be easily integrated into other software and extended 
+with new features, thanks to its modular code design.
 
 ## Key Features
 
-- Implemented entirely in standard Python
+- Written entirely in standard Python
 - No external dependencies required
 - Compatible with UNIX-like operating systems and Windows
+- Easily upgradeable
 - Simple and intuitive interface
 
 ## System Requirements
