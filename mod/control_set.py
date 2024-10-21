@@ -101,11 +101,11 @@ def set_label_and_quit(max_string_length, data_value, data_row, data_label_row):
         print_top_border(max_string_length, "SET LABEL")
         print('Insert the label for the new command (for example "CTRL+U"): ' + str(new_label))
         print("\n")
-        print_bottom_border(max_string_length, "[CTRL+W : Quit (without saving) , CTRL+S : Save and Quit]")
+        print_bottom_border(max_string_length, "[CTRL+W : Quit (without saving) , ENTER : Save and Quit]")
 
         user_input = get_key()
 
-        if user_input[0] == "CTRL+s":
+        if user_input[0] == "ENTER":
             new_label = '"' + str(new_label) + '"'
             edit_data(get_path_to("data sys_var.data"), data_row, data_value)
             edit_data(get_path_to("data sys_var.data"), data_label_row, new_label)
@@ -116,7 +116,7 @@ def set_label_and_quit(max_string_length, data_value, data_row, data_label_row):
             new_label = new_label[:len(new_label)-1]
         elif user_input[0] == "CANCEL":
             None
-        elif user_input[0] == "ENTER":
+        elif user_input[0] == "CTRL+s":
             None
         elif user_input[0] == "CTRL+e":
             None
@@ -216,7 +216,7 @@ def set_controls(max_string_length):
         right_label = get_data_value(get_path_to("data sys_var.data"), 18)
         fast_right_label = get_data_value(get_path_to("data sys_var.data"), 19)
         fast_left_label = get_data_value(get_path_to("data sys_var.data"), 20)
-        
+
         clear_terminal()
         print(title, end="")
         for i in range(max_string_length - len(title) - len("MAX: " + str(max_string_length))):
