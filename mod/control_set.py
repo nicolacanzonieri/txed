@@ -18,12 +18,12 @@ from utils.os_util import clear_terminal
 from utils.ui_util import print_top_border, print_bottom_border
 
 
-up_label = get_data_value(get_path_to("data sys_var.data"), 15)
-down_label = get_data_value(get_path_to("data sys_var.data"), 16)
-left_label = get_data_value(get_path_to("data sys_var.data"), 17)
-right_label = get_data_value(get_path_to("data sys_var.data"), 18)
-fast_right_label = get_data_value(get_path_to("data sys_var.data"), 19)
-fast_left_label = get_data_value(get_path_to("data sys_var.data"), 20)
+up_label = ""
+down_label = ""
+left_label = ""
+right_label = ""
+fast_right_label = ""
+fast_left_label = ""
 
 
 debug = False
@@ -106,7 +106,7 @@ def set_label_and_quit(max_string_length, data_value, data_row, data_label_row):
         user_input = get_key()
 
         if user_input[0] == "CTRL+s":
-            new_label = "'" + str(new_label) + "'"
+            new_label = '"' + str(new_label) + '"'
             edit_data(get_path_to("data sys_var.data"), data_row, data_value)
             edit_data(get_path_to("data sys_var.data"), data_label_row, new_label)
             break
@@ -181,7 +181,7 @@ def set_control(max_string_length, control, label):
         if user_input[0] == "CTRL+w":
             break
         elif user_input[0] == "CTRL+s":
-            data_value = "'" + str(new_key) + "'"
+            data_value = '"' + str(new_key) + '"'
             set_label_and_quit(max_string_length, data_value, data_row, data_label_row)
             break
         elif user_input[0]== "CTRL+e":
@@ -207,8 +207,16 @@ def set_controls(max_string_length):
 
     @param "max_string_length" : Integer with the maximum string length allowed
     '''
+
     title = "CONTROL-SETTER"
     while True:
+        up_label = get_data_value(get_path_to("data sys_var.data"), 15)
+        down_label = get_data_value(get_path_to("data sys_var.data"), 16)
+        left_label = get_data_value(get_path_to("data sys_var.data"), 17)
+        right_label = get_data_value(get_path_to("data sys_var.data"), 18)
+        fast_right_label = get_data_value(get_path_to("data sys_var.data"), 19)
+        fast_left_label = get_data_value(get_path_to("data sys_var.data"), 20)
+        
         clear_terminal()
         print(title, end="")
         for i in range(max_string_length - len(title) - len("MAX: " + str(max_string_length))):
