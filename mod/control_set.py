@@ -7,14 +7,6 @@ Index:
 '''
 
 
-up_label = get_data_value(get_path_to("data sys_var.data"), 15)
-down_label = get_data_value(get_path_to("data sys_var.data"), 16)
-left_label = get_data_value(get_path_to("data sys_var.data"), 17)
-right_label = get_data_value(get_path_to("data sys_var.data"), 18)
-fast_right_label = get_data_value(get_path_to("data sys_var.data"), 19)
-fast_left_label = get_data_value(get_path_to("data sys_var.data"), 20)
-
-
 import sys
 import os
 
@@ -23,6 +15,14 @@ from utils.data_util import edit_data, get_data_value
 from utils.dir_util import get_path_to
 from utils.os_util import clear_terminal
 from utils.ui_util import print_top_border, print_bottom_border
+
+
+up_label = get_data_value(get_path_to("data sys_var.data"), 15)
+down_label = get_data_value(get_path_to("data sys_var.data"), 16)
+left_label = get_data_value(get_path_to("data sys_var.data"), 17)
+right_label = get_data_value(get_path_to("data sys_var.data"), 18)
+fast_right_label = get_data_value(get_path_to("data sys_var.data"), 19)
+fast_left_label = get_data_value(get_path_to("data sys_var.data"), 20)
 
 
 debug = False
