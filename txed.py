@@ -170,7 +170,6 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
 	@param "cursor_x" : cursor x position
 	@param "cursor_y" : cursor y position
 	'''
-	file_vec_len = len(file_vec)
 	file_vec_index = 0
 
 	while cursor_y >= file_vec_index + max_file_lines:
@@ -218,6 +217,7 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
 	'''
 	if user_input == "CTRL+e":
 		set_controls(max_string_length)
+		update_ctrls()
 	elif user_input == "UP":
 		cursor_y -= 1
 	elif user_input == "RIGHT":

@@ -1,6 +1,6 @@
 # To Do in TxEd
 
-- [ ] Better optimization
+- [ ] Better file printing optimization
 - [ ] Better controls
 - [ ] Utils file with controls function
 - [ ] Better cursor?
