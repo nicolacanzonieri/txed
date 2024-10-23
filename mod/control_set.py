@@ -107,8 +107,8 @@ def set_label_and_quit(max_string_length, data_value, data_row, data_label_row):
 
         if user_input[0] == "ENTER":
             new_label = '"' + str(new_label) + '"'
-            edit_data(get_path_to("data sys_var.data"), data_row, data_value)
-            edit_data(get_path_to("data sys_var.data"), data_label_row, new_label)
+            edit_data(get_path_to("data var.data"), data_row, data_value)
+            edit_data(get_path_to("data var.data"), data_label_row, new_label)
             break
         elif user_input[0] == "CTRL+w":
             break
@@ -210,12 +210,12 @@ def set_controls(max_string_length):
 
     title = "CONTROL-SETTER"
     while True:
-        up_label = get_data_value(get_path_to("data sys_var.data"), 15)
-        down_label = get_data_value(get_path_to("data sys_var.data"), 16)
-        left_label = get_data_value(get_path_to("data sys_var.data"), 17)
-        right_label = get_data_value(get_path_to("data sys_var.data"), 18)
-        fast_left_label = get_data_value(get_path_to("data sys_var.data"), 19)
-        fast_right_label = get_data_value(get_path_to("data sys_var.data"), 20)
+        up_label = get_data_value(get_path_to("data var.data"), 15)
+        down_label = get_data_value(get_path_to("data var.data"), 16)
+        left_label = get_data_value(get_path_to("data var.data"), 17)
+        right_label = get_data_value(get_path_to("data var.data"), 18)
+        fast_left_label = get_data_value(get_path_to("data var.data"), 19)
+        fast_right_label = get_data_value(get_path_to("data var.data"), 20)
 
         clear_terminal()
         print(title, end="")

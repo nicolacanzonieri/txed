@@ -4,6 +4,7 @@ By Nicola Canzonieri - 2024
 
 
 Index:
+- update_ctrls()
 - get_key()
 - print_cursor()
 - print_ui()
@@ -27,12 +28,42 @@ from mod.control_set import set_controls
 
 
 '''
-SYSTEM VARIABLES
+GLOBAL VARIABLES
 '''
-sys_var_data_path = get_path_to("data sys_var.data")
-max_string_length = str_to_int(get_data_value(sys_var_data_path, 1))
-max_file_lines = str_to_int(get_data_value(sys_var_data_path, 2))
+var_data_path = get_path_to("data var.data")
+max_string_length = str_to_int(get_data_value(var_data_path, 1))
+max_file_lines = str_to_int(get_data_value(var_data_path, 2))
 debug = False
+
+
+'''
+CONTROL VARIABLES
+'''
+up_ctrl = get_data_value(var_data_path, 3 if os.name == "nt" else 4)
+down_ctrl = get_data_value(var_data_path, 5 if os.name == "nt" else 6)
+left_ctrl = get_data_value(var_data_path, 7 if os.name == "nt" else 8)
+right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
+fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
+fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
+
+
+def update_ctrls():
+	'''
+	Update current cursors by retrieving data from data file
+	'''
+	up_ctrl = get_data_value(var_data_path, 3 if os.name == "nt" else 4)
+	down_ctrl = get_data_value(var_data_path, 5 if os.name == "nt" else 6)
+	left_ctrl = get_data_value(var_data_path, 7 if os.name == "nt" else 8)
+	right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
+	fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
+	fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
+	if os.name != "nt":
+		up_ctrl = str_to_int(up_ctrl)
+		down_ctrl = str_to_int(down_ctrl)
+		left_ctrl = str_to_int(left_ctrl)
+		right_ctrl = str_to_int(right_ctrl)
+		fast_left_ctrl = str_to_int(fast_left_ctrl)
+		fast_right_ctrl = str_to_int(fast_right_ctrl)
 
 
 '''
@@ -43,24 +74,24 @@ if sys.platform == "win32":
 
 	def get_key():
 		while True:
-			data_path = get_path_to("data sys_var.data")
+			data_path = get_path_to("data var.data")
 			key = msvcrt.getch()
 			if debug:
 				print("\n\nPRESSED KEY: " + str(key) + "\n\n")
 			if key == b'\x05':    # Control-Setter
 				return "CTRL+e"
-			elif str(key) == get_data_value(data_path, 3):   # Up
-				return "CTRL+i"
-			elif str(key) == get_data_value(data_path, 9):   # Right
-				return "CTRL+l"
-			elif str(key) == get_data_value(data_path, 5):   # Down
-				return "CTRL+k"
-			elif str(key) == get_data_value(data_path, 7):   # Left
-				return "CTRL+j"
-			elif str(key) == get_data_value(data_path, 13):  # Fast right
-				return "CTRL+o"
-			elif str(key) == get_data_value(data_path, 11):  # Fast left
-				return "CTRL+u"
+			elif str(key) == up_ctrl:          # Up
+				return "UP"
+			elif str(key) == right_ctrl:       # Right
+				return "RIGHT"
+			elif str(key) == down_ctrl:        # Down
+				return "DOWN"
+			elif str(key) == left_ctrl:        # Left
+				return "LEFT"
+			elif str(key) == fast_right_ctrl:  # Fast right
+				return "FAST RIGHT"
+			elif str(key) == fast_left_ctrl:   # Fast left
+				return "FAST LEFT"
 			elif key == b'\x17':  # Close
 				return "CTRL+w"
 			elif key == b"\x08":  # Backspace/Delete key
@@ -82,24 +113,24 @@ else:
 		old_settings = termios.tcgetattr(fd)
 		try:
 			tty.setraw(fd)
-			data_path = get_path_to("data sys_var.data")
+			data_path = get_path_to("data var.data")
 			key = sys.stdin.read(1)
 			if debug:
 				print("\n\nPRESSED KEY: " + str(ord(key)) + "\n\n")
 			if ord(key) == 5:     # Control-Setter
 				return "CTRL+e"
-			elif str(ord(key)) == get_data_value(data_path, 4):   # Up
-				return "CTRL+i"
-			elif str(ord(key)) == get_data_value(data_path, 10):  # Right
-				return "CTRL+l"
-			elif str(ord(key)) == get_data_value(data_path, 6):  # Down
-				return "CTRL+k"
-			elif str(ord(key)) == get_data_value(data_path, 8):  # Left
-				return "CTRL+j"
-			elif str(ord(key)) == get_data_value(data_path, 14):  # Fast right
-				return "CTRL+o"
-			elif str(ord(key)) == get_data_value(data_path, 12):  # Fast left
-				return "CTRL+u"
+			elif str(ord(key)) == up_ctrl:          # Up
+				return "UP"
+			elif str(ord(key)) == right_ctrl:       # Right
+				return "RIGHT"
+			elif str(ord(key)) == down_ctrl:        # Down
+				return "DOWN"
+			elif str(ord(key)) == left_ctrl:        # Left
+				return "LEFT"
+			elif str(ord(key)) == fast_right_ctrl:  # Fast right
+				return "FAST RIGHT"
+			elif str(ord(key)) == fast_left_ctrl:   # Fast left
+				return "FAST LEFT"
 			elif ord(key) == 23:  # Close
 				return "CTRL+w"
 			elif ord(key) == 19:  # Save
@@ -139,7 +170,6 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
 	@param "cursor_x" : cursor x position
 	@param "cursor_y" : cursor y position
 	'''
-	file_vec_len = len(file_vec)
 	file_vec_index = 0
 
 	while cursor_y >= file_vec_index + max_file_lines:
@@ -187,25 +217,26 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
 	'''
 	if user_input == "CTRL+e":
 		set_controls(max_string_length)
-	elif user_input == "CTRL+i":
+		update_ctrls()
+	elif user_input == "UP":
 		cursor_y -= 1
-	elif user_input == "CTRL+l":
+	elif user_input == "RIGHT":
 		if cursor_x == len(file_vec[cursor_y]) and cursor_y < len(file_vec):
 			cursor_y += 1
 			cursor_x = 0
 		else:
 			cursor_x += 1
-	elif user_input == "CTRL+k":
+	elif user_input == "DOWN":
 		cursor_y += 1
-	elif user_input == "CTRL+j":
+	elif user_input == "LEFT":
 		if cursor_x == 0 and cursor_y > 0:
 			cursor_y -= 1
 			cursor_x = len(file_vec[cursor_y])
 		else:
 			cursor_x -= 1
-	elif user_input == "CTRL+o":
+	elif user_input == "FAST RIGHT":
 		cursor_x += 5
-	elif user_input == "CTRL+u":
+	elif user_input == "FAST LEFT":
 		cursor_x -= 5
 	elif user_input == "DELETE" and cursor_x > 0:
 		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x-1] + file_vec[cursor_y][cursor_x:]
@@ -270,7 +301,7 @@ def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
 	'''
 	# PREPARE TO LAUNCH TXED
 	clear_terminal()
-
+	
 	# MAIN LOOP
 	while True:
 		# PRINT USER INTERFACE
