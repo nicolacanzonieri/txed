@@ -33,6 +33,13 @@ GLOBAL VARIABLES
 var_data_path = get_path_to("data var.data")
 max_string_length = str_to_int(get_data_value(var_data_path, 1))
 max_file_lines = str_to_int(get_data_value(var_data_path, 2))
+up_ctrl = get_data_value(var_data_path, 3 if os.name == "nt" else 4)
+down_ctrl = get_data_value(var_data_path, 5 if os.name == "nt" else 6)
+left_ctrl = get_data_value(var_data_path, 7 if os.name == "nt" else 8)
+right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
+fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
+fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
+
 debug = False
 
 
@@ -40,20 +47,22 @@ debug = False
 CONTROL VARIABLES
 '''
 def update_ctrls():
-	if os.name == "nt":
-		up_ctrl = get_data_value(var_data_path, 3)
-		down_ctrl = get_data_value(var_data_path, 5)
-		left_ctrl = get_data_value(var_data_path, 7)
-		right_ctrl = get_data_value(var_data_path, 9)
-		fast_left_ctrl = get_data_value(var_data_path, 11)
-		fast_right_ctrl = get_data_value(var_data_path, 13)
-	else:
-		up_ctrl = get_data_value(var_data_path, 4)
-		down_ctrl = get_data_value(var_data_path, 6)
-		left_ctrl = get_data_value(var_data_path, 8)
-		right_ctrl = get_data_value(var_data_path, 10)
-		fast_left_ctrl = get_data_value(var_data_path, 12)
-		fast_right_ctrl = get_data_value(var_data_path, 14)
+	'''
+	Update current cursors by retrieving data from data file
+	'''
+	up_ctrl = get_data_value(var_data_path, 3 if os.name == "nt" else 4)
+	down_ctrl = get_data_value(var_data_path, 5 if os.name == "nt" else 6)
+	left_ctrl = get_data_value(var_data_path, 7 if os.name == "nt" else 8)
+	right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
+	fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
+	fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
+	if os.name != "nt":
+		up_ctrl = str_to_int(up_ctrl)
+		down_ctrl = str_to_int(down_ctrl)
+		left_ctrl = str_to_int(left_ctrl)
+		right_ctrl = str_to_int(right_ctrl)
+		fast_left_ctrl = str_to_int(fast_left_ctrl)
+		fast_right_ctrl = str_to_int(fast_right_ctrl)
 
 
 '''
@@ -290,7 +299,6 @@ def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
 	@param "cursor_y" : cursor y position
 	'''
 	# PREPARE TO LAUNCH TXED
-	update_ctrls()
 	clear_terminal()
 	
 	# MAIN LOOP
