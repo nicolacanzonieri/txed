@@ -33,6 +33,12 @@ GLOBAL VARIABLES
 var_data_path = get_path_to("data var.data")
 max_string_length = str_to_int(get_data_value(var_data_path, 1))
 max_file_lines = str_to_int(get_data_value(var_data_path, 2))
+debug = False
+
+
+'''
+CONTROL VARIABLES
+'''
 up_ctrl = get_data_value(var_data_path, 3 if os.name == "nt" else 4)
 down_ctrl = get_data_value(var_data_path, 5 if os.name == "nt" else 6)
 left_ctrl = get_data_value(var_data_path, 7 if os.name == "nt" else 8)
@@ -40,12 +46,7 @@ right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
 fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
 fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
 
-debug = False
 
-
-'''
-CONTROL VARIABLES
-'''
 def update_ctrls():
 	'''
 	Update current cursors by retrieving data from data file
