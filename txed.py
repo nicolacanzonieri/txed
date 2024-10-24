@@ -57,7 +57,7 @@ def update_ctrls():
 	right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
 	fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
 	fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
-	if os.name != "nt":
+	if os.name != "nt": # UNIX SYSTEMS
 		up_ctrl = str_to_int(up_ctrl)
 		down_ctrl = str_to_int(down_ctrl)
 		left_ctrl = str_to_int(left_ctrl)
