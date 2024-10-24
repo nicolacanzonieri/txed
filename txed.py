@@ -33,7 +33,7 @@ GLOBAL VARIABLES
 var_data_path = get_path_to("data var.data")
 max_string_length = str_to_int(get_data_value(var_data_path, 1))
 max_file_lines = str_to_int(get_data_value(var_data_path, 2))
-debug = False
+debug = True
 
 
 '''
@@ -141,6 +141,8 @@ else:
 				return "CANCEL"
 			elif ord(key) == 13:  # Enter, Newline
 				return "ENTER"
+			elif ord(key) == 9:   # Tab
+				return "TAB"
 		finally:
 			termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 		return key
@@ -263,6 +265,9 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
 		file_vec.insert(cursor_y + 1, file_vec[cursor_y][cursor_x:])
 		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x]
 		cursor_y += 1
+	elif user_input == "TAB":
+		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x] + '\t' + file_vec[cursor_y][cursor_x:]
+		cursor_x += 1
 	else: # User pressed a generic keyboard button (like a letter)
 		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x] + user_input + file_vec[cursor_y][cursor_x:]
 		cursor_x += 1
