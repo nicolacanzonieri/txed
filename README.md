@@ -53,13 +53,13 @@ example, configuration or data files that are user-specific might need to be
 excluded from Git's list of modified files. One such file could be 
 `data/sys_var.data`.
 
-To avoid Git tracking modifications to `data/sys_var.data`, you can type:
+To avoid Git tracking modifications to `data/var.data`, you can type:
 
 ```git update-index --assume-unchanged data/sys_var.data```
 
 If you want to restore this option use:
 
-```git update-index --no-assume-unchanged data/sys_var.data```
+```git update-index --no-assume-unchanged data/var.data```
 
 ## Contributing
 
