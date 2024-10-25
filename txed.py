@@ -33,6 +33,8 @@ GLOBAL VARIABLES
 var_data_path = get_path_to("data var.data")
 max_string_length = str_to_int(get_data_value(var_data_path, 1))
 max_file_lines = str_to_int(get_data_value(var_data_path, 2))
+file_line_start = 0
+file_line_end = max_file_lines
 debug = False
 
 
@@ -57,7 +59,7 @@ def update_ctrls():
 	right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
 	fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
 	fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
-	if os.name != "nt":
+	if os.name != "nt": # UNIX SYSTEMS
 		up_ctrl = str_to_int(up_ctrl)
 		down_ctrl = str_to_int(down_ctrl)
 		left_ctrl = str_to_int(left_ctrl)
@@ -96,12 +98,14 @@ if sys.platform == "win32":
 				return "CTRL+w"
 			elif key == b"\x08":  # Backspace/Delete key
 				return "DELETE"
-			elif key == b"\xe0":
-				return "CANCEL"   # Cancel key (NOT SUPPORTED TODO!)
-			elif key == b'\x13':
-				return "CTRL+s"   # Save
-			elif key == b'\r':
-				return "ENTER"    # Enter, Newline
+			elif key == b"\xe0":  # Cancel key (NOT SUPPORTED TODO!)
+				return "CANCEL"
+			elif key == b'\x13':  # Save
+				return "CTRL+s"
+			elif key == b'\r':    # Enter, Newline
+				return "ENTER"
+			elif key == b'\t':    # Tab
+				return "TAB"
 			return key.decode("utf-8")
 
 else:
@@ -141,6 +145,8 @@ else:
 				return "CANCEL"
 			elif ord(key) == 13:  # Enter, Newline
 				return "ENTER"
+			elif ord(key) == 9:   # Tab
+				return "TAB"
 		finally:
 			termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 		return key
@@ -170,42 +176,42 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
 	@param "cursor_x" : cursor x position
 	@param "cursor_y" : cursor y position
 	'''
-	file_vec_index = 0
-
-	while cursor_y >= file_vec_index + max_file_lines:
-		file_vec_index += 1
+	global file_line_start
+	global file_line_end
 	
+	if cursor_y < file_line_start:
+		file_line_start = cursor_y
+		file_line_end -= 1
+	elif cursor_y > file_line_end:
+		file_line_end = cursor_y
+		file_line_start += 1
+	
+	if file_line_end > len(file_vec):
+		file_line_end = len(file_vec)
+
 	try:
 		print_top_border(max_string_length, path_to_file)
 	except:
 		print("ERROR: can't print top border UI")
-		
-		# PRINTER
-	i = 0
-	while i < max_file_lines:
-		if cursor_y == file_vec_index:
+	
+	# PRINTER
+	i = file_line_start
+	while i < file_line_end + 1:
+		if cursor_y == i:
 			is_cursor_line = True
 		else:
 			is_cursor_line = False
 
-		if file_vec_index < len(file_vec):
-			try:
-				file_line = file_vec[file_vec_index]
-				print(file_line)
-			except:
-				print("")
+		file_line = file_vec[i]
+		print(file_line)
 
-			if is_cursor_line:
-				print_cursor(file_line, cursor_x)
-			
-		file_vec_index += 1
+		if is_cursor_line:
+			print_cursor(file_line, cursor_x)
 		i += 1
 		
 	print("")
-	for i in range(max_string_length):
-		print("=", end="")
-	print("\n", end="")
-	print("[CTRL+W : Close TxEd , CTRL+S : Save file , CTRL+E : Change controls , CTRL+I/J/K/L/U/O : Move]")
+	bottom_title = "[CTRL+W : Close TxEd , CTRL+S : Save file , CTRL+E : Change controls , CTRL+I/J/K/L/U/O : Move]"
+	print_bottom_border(max_string_length, bottom_title)
 
 
 def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
@@ -263,6 +269,9 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
 		file_vec.insert(cursor_y + 1, file_vec[cursor_y][cursor_x:])
 		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x]
 		cursor_y += 1
+	elif user_input == "TAB":
+		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x] + '\t' + file_vec[cursor_y][cursor_x:]
+		cursor_x += 1
 	else: # User pressed a generic keyboard button (like a letter)
 		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x] + user_input + file_vec[cursor_y][cursor_x:]
 		cursor_x += 1
