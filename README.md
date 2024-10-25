@@ -55,7 +55,7 @@ excluded from Git's list of modified files. One such file could be
 
 To avoid Git tracking modifications to `data/var.data`, you can type:
 
-```git update-index --assume-unchanged data/sys_var.data```
+```git update-index --assume-unchanged data/var.data```
 
 If you want to restore this option use:
 

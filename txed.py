@@ -33,7 +33,7 @@ GLOBAL VARIABLES
 var_data_path = get_path_to("data var.data")
 max_string_length = str_to_int(get_data_value(var_data_path, 1))
 max_file_lines = str_to_int(get_data_value(var_data_path, 2))
-debug = True
+debug = False
 
 
 '''
