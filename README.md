@@ -51,7 +51,7 @@ In some projects, there may be files that are part of the repository but
 should not be modified or committed every time they are changed locally. For 
 example, configuration or data files that are user-specific might need to be 
 excluded from Git's list of modified files. One such file could be 
-`data/sys_var.data`.
+`data/var.data`.
 
 To avoid Git tracking modifications to `data/var.data`, you can type:
 

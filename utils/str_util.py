@@ -4,6 +4,7 @@ STR UTIL
 Index:
 - str_to_vec()
 - str_to_int()
+- replace_tabs_with_spaces()
 '''
 
 
@@ -45,3 +46,7 @@ def str_to_int(string) -> int:
         return (ord(char) - 48) * pow(10, (len(string) - 1)) + str_to_int(string[1:])
     else:
         return (ord(char) - 48)
+
+
+def replace_tabs_with_spaces_in_str(file_line, tab_size=4):
+    return file_line.replace("\t", " " * tab_size)
