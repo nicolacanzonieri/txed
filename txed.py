@@ -169,7 +169,8 @@ def print_cursor(line, cursor_x):
 			print(" ", end="")
 		line_index += 1
 	if DEBUG:
-		print(" " + str(line_index) + " " + str(cursor_x) + " " + str(len(line)))
+		print(" " + str(line_index) + " " + str(cursor_x) + " " + str(len(line)), end="")
+	print("\n", end="")
 
 
 def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
