@@ -20,8 +20,9 @@ from utils.data_util import get_data_value
 from utils.dir_util import get_path_to
 from utils.file_util import file_to_vec, vec_to_file, extend_file_vec
 from utils.os_util import clear_terminal
-from utils.str_util import str_to_int
+from utils.str_util import str_to_int, replace_tabs_with_spaces_in_str
 from utils.ui_util import print_top_border, print_bottom_border
+from utils.vec_util import replace_tabs_with_spaces_in_list
 
 
 from mod.control_set import set_controls 
@@ -30,35 +31,36 @@ from mod.control_set import set_controls
 '''
 GLOBAL VARIABLES
 '''
-var_data_path = get_path_to("data var.data")
-max_string_length = str_to_int(get_data_value(var_data_path, 1))
-max_file_lines = str_to_int(get_data_value(var_data_path, 2))
-file_line_start = 0
-file_line_end = max_file_lines
-debug = False
+VAR_DATA_PATH = get_path_to("data var.data")
+MAX_STRING_LENGTH = str_to_int(get_data_value(VAR_DATA_PATH, 1))
+MAX_FILE_LINES = str_to_int(get_data_value(VAR_DATA_PATH, 2))
+FILE_LINE_START = 0
+FILE_LINE_END = MAX_FILE_LINES
+TAB_SIZE = str_to_int(get_data_value(VAR_DATA_PATH, 21))
+DEBUG = False
 
 
 '''
 CONTROL VARIABLES
 '''
-up_ctrl = get_data_value(var_data_path, 3 if os.name == "nt" else 4)
-down_ctrl = get_data_value(var_data_path, 5 if os.name == "nt" else 6)
-left_ctrl = get_data_value(var_data_path, 7 if os.name == "nt" else 8)
-right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
-fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
-fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
+up_ctrl = get_data_value(VAR_DATA_PATH, 3 if os.name == "nt" else 4)
+down_ctrl = get_data_value(VAR_DATA_PATH, 5 if os.name == "nt" else 6)
+left_ctrl = get_data_value(VAR_DATA_PATH, 7 if os.name == "nt" else 8)
+right_ctrl = get_data_value(VAR_DATA_PATH, 9 if os.name == "nt" else 10)
+fast_left_ctrl = get_data_value(VAR_DATA_PATH, 11 if os.name == "nt" else 12)
+fast_right_ctrl = get_data_value(VAR_DATA_PATH, 13 if os.name == "nt" else 14)
 
 
 def update_ctrls():
 	'''
 	Update current cursors by retrieving data from data file
 	'''
-	up_ctrl = get_data_value(var_data_path, 3 if os.name == "nt" else 4)
-	down_ctrl = get_data_value(var_data_path, 5 if os.name == "nt" else 6)
-	left_ctrl = get_data_value(var_data_path, 7 if os.name == "nt" else 8)
-	right_ctrl = get_data_value(var_data_path, 9 if os.name == "nt" else 10)
-	fast_left_ctrl = get_data_value(var_data_path, 11 if os.name == "nt" else 12)
-	fast_right_ctrl = get_data_value(var_data_path, 13 if os.name == "nt" else 14)
+	up_ctrl = get_data_value(VAR_DATA_PATH, 3 if os.name == "nt" else 4)
+	down_ctrl = get_data_value(VAR_DATA_PATH, 5 if os.name == "nt" else 6)
+	left_ctrl = get_data_value(VAR_DATA_PATH, 7 if os.name == "nt" else 8)
+	right_ctrl = get_data_value(VAR_DATA_PATH, 9 if os.name == "nt" else 10)
+	fast_left_ctrl = get_data_value(VAR_DATA_PATH, 11 if os.name == "nt" else 12)
+	fast_right_ctrl = get_data_value(VAR_DATA_PATH, 13 if os.name == "nt" else 14)
 	if os.name != "nt": # UNIX SYSTEMS
 		up_ctrl = str_to_int(up_ctrl)
 		down_ctrl = str_to_int(down_ctrl)
@@ -78,7 +80,7 @@ if sys.platform == "win32":
 		while True:
 			data_path = get_path_to("data var.data")
 			key = msvcrt.getch()
-			if debug:
+			if DEBUG:
 				print("\n\nPRESSED KEY: " + str(key) + "\n\n")
 			if key == b'\x05':    # Control-Setter
 				return "CTRL+e"
@@ -119,7 +121,7 @@ else:
 			tty.setraw(fd)
 			data_path = get_path_to("data var.data")
 			key = sys.stdin.read(1)
-			if debug:
+			if DEBUG:
 				print("\n\nPRESSED KEY: " + str(ord(key)) + "\n\n")
 			if ord(key) == 5:     # Control-Setter
 				return "CTRL+e"
@@ -166,7 +168,8 @@ def print_cursor(line, cursor_x):
 		else:
 			print(" ", end="")
 		line_index += 1
-	print("")
+	if DEBUG:
+		print(" " + str(line_index) + " " + str(cursor_x) + " " + str(len(line)))
 
 
 def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
@@ -176,34 +179,38 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
 	@param "cursor_x" : cursor x position
 	@param "cursor_y" : cursor y position
 	'''
-	global file_line_start
-	global file_line_end
+	global FILE_LINE_START
+	global FILE_LINE_END
 	
-	if cursor_y < file_line_start:
-		file_line_start = cursor_y
-		file_line_end -= 1
-	elif cursor_y > file_line_end:
-		file_line_end = cursor_y
-		file_line_start += 1
+	if cursor_y < FILE_LINE_START:
+		FILE_LINE_START = cursor_y
+		FILE_LINE_END -= 1
+	elif cursor_y > FILE_LINE_END:
+		FILE_LINE_END = cursor_y
+		FILE_LINE_START += 1
 	
-	if file_line_end > len(file_vec):
-		file_line_end = len(file_vec)
+	if FILE_LINE_END > len(file_vec):
+		FILE_LINE_END = len(file_vec)
 
 	try:
-		print_top_border(max_string_length, path_to_file)
+		print_top_border(MAX_STRING_LENGTH, path_to_file)
 	except:
 		print("ERROR: can't print top border UI")
 	
 	# PRINTER
-	i = file_line_start
-	while i < file_line_end + 1:
+	i = FILE_LINE_START
+	while i < FILE_LINE_END + 1:
 		if cursor_y == i:
 			is_cursor_line = True
 		else:
 			is_cursor_line = False
 
-		file_line = file_vec[i]
-		print(file_line)
+		try:
+			file_line = file_vec[i]
+			file_line = replace_tabs_with_spaces_in_str(file_line, TAB_SIZE)
+			print(file_line)
+		except:
+			print("")
 
 		if is_cursor_line:
 			print_cursor(file_line, cursor_x)
@@ -211,7 +218,7 @@ def print_ui(path_to_file, file_vec, cursor_x, cursor_y):
 		
 	print("")
 	bottom_title = "[CTRL+W : Close TxEd , CTRL+S : Save file , CTRL+E : Change controls , CTRL+I/J/K/L/U/O : Move]"
-	print_bottom_border(max_string_length, bottom_title)
+	print_bottom_border(MAX_STRING_LENGTH, bottom_title)
 
 
 def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
@@ -222,7 +229,7 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
 	@param "cursor_y" : cursor y position
 	'''
 	if user_input == "CTRL+e":
-		set_controls(max_string_length)
+		set_controls(MAX_STRING_LENGTH)
 		update_ctrls()
 	elif user_input == "UP":
 		cursor_y -= 1
@@ -262,7 +269,7 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
 			index_2 += 1
 		cursor_y -= 1
 		cursor_x = len(file_vec[cursor_y])
-		file_vec = extend_file_vec(updated_file_vec, max_string_length)
+		file_vec = extend_file_vec(updated_file_vec, MAX_STRING_LENGTH)
 	elif user_input == "DELETE" and cursor_x == 0 and cursor_y == 0:
 		None
 	elif user_input == "ENTER":
@@ -270,10 +277,14 @@ def input_handler(user_input, cursor_x, cursor_y, file_vec) -> tuple:
 		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x]
 		cursor_y += 1
 	elif user_input == "TAB":
-		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x] + '\t' + file_vec[cursor_y][cursor_x:]
-		cursor_x += 1
+		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x] + (" " * TAB_SIZE) + file_vec[cursor_y][cursor_x:]
+		cursor_x += 4
 	else: # User pressed a generic keyboard button (like a letter)
 		file_vec[cursor_y] = file_vec[cursor_y][:cursor_x] + user_input + file_vec[cursor_y][cursor_x:]
+		
+		# TODO!
+		#file_vec = extend_file_vec(file_vec, MAX_STRING_LENGTH)
+		
 		cursor_x += 1
 	return fix_cursor_position(file_vec, cursor_x, cursor_y)
 
@@ -322,7 +333,7 @@ def main_logic(path_to_file, file_vec, cursor_x, cursor_y):
 		except:
 			user_input = ""
 		
-		if not debug:
+		if not DEBUG:
 			clear_terminal()
 
 		# USER INPUT HANDLER
@@ -345,7 +356,7 @@ def start_editor(path_to_file):
 	cursor_x = 0
 	cursor_y = 0
 	# TRANSFORM FILE TO A LIST
-	file_vec = extend_file_vec(file_to_vec(path_to_file), max_string_length)
+	file_vec = replace_tabs_with_spaces_in_list(extend_file_vec(file_to_vec(path_to_file), MAX_STRING_LENGTH), TAB_SIZE)
 	# START MAIN LOGIC
 	main_logic(path_to_file, file_vec, cursor_x, cursor_y)
 

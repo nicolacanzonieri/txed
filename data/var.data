@@ -19,5 +19,6 @@
 	"left label": "CTRL+K",
 	"right label": "CTRL+L",
 	"fast left label": "CTRL+O",
-	"fast right label": "CTRL+P"
+	"fast right label": "CTRL+P",
+	"tab size": "4"
 }
