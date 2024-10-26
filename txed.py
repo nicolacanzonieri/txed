@@ -19,6 +19,7 @@ import os
 from utils.data_util import get_data_value
 from utils.dir_util import get_path_to
 from utils.file_util import file_to_vec, vec_to_file, extend_file_vec
+from utils.key_getter_util import get_key
 from utils.os_util import clear_terminal
 from utils.str_util import str_to_int, replace_tabs_with_spaces_in_str
 from utils.ui_util import print_top_border, print_bottom_border
@@ -68,90 +69,6 @@ def update_ctrls():
 		right_ctrl = str_to_int(right_ctrl)
 		fast_left_ctrl = str_to_int(fast_left_ctrl)
 		fast_right_ctrl = str_to_int(fast_right_ctrl)
-
-
-'''
-Detect special keys pressed by the user
-'''
-if sys.platform == "win32":
-	import msvcrt
-
-	def get_key():
-		while True:
-			data_path = get_path_to("data var.data")
-			key = msvcrt.getch()
-			if DEBUG:
-				print("\n\nPRESSED KEY: " + str(key) + "\n\n")
-			if key == b'\x05':    # Control-Setter
-				return "CTRL+e"
-			elif str(key) == up_ctrl:          # Up
-				return "UP"
-			elif str(key) == right_ctrl:       # Right
-				return "RIGHT"
-			elif str(key) == down_ctrl:        # Down
-				return "DOWN"
-			elif str(key) == left_ctrl:        # Left
-				return "LEFT"
-			elif str(key) == fast_right_ctrl:  # Fast right
-				return "FAST RIGHT"
-			elif str(key) == fast_left_ctrl:   # Fast left
-				return "FAST LEFT"
-			elif key == b'\x17':  # Close
-				return "CTRL+w"
-			elif key == b"\x08":  # Backspace/Delete key
-				return "DELETE"
-			elif key == b"\xe0":  # Cancel key (NOT SUPPORTED TODO!)
-				return "CANCEL"
-			elif key == b'\x13':  # Save
-				return "CTRL+s"
-			elif key == b'\r':    # Enter, Newline
-				return "ENTER"
-			elif key == b'\t':    # Tab
-				return "TAB"
-			return key.decode("utf-8")
-
-else:
-	import tty
-	import termios
-
-	def get_key():
-		fd = sys.stdin.fileno()
-		old_settings = termios.tcgetattr(fd)
-		try:
-			tty.setraw(fd)
-			data_path = get_path_to("data var.data")
-			key = sys.stdin.read(1)
-			if DEBUG:
-				print("\n\nPRESSED KEY: " + str(ord(key)) + "\n\n")
-			if ord(key) == 5:     # Control-Setter
-				return "CTRL+e"
-			elif str(ord(key)) == up_ctrl:          # Up
-				return "UP"
-			elif str(ord(key)) == right_ctrl:       # Right
-				return "RIGHT"
-			elif str(ord(key)) == down_ctrl:        # Down
-				return "DOWN"
-			elif str(ord(key)) == left_ctrl:        # Left
-				return "LEFT"
-			elif str(ord(key)) == fast_right_ctrl:  # Fast right
-				return "FAST RIGHT"
-			elif str(ord(key)) == fast_left_ctrl:   # Fast left
-				return "FAST LEFT"
-			elif ord(key) == 23:  # Close
-				return "CTRL+w"
-			elif ord(key) == 19:  # Save
-				return "CTRL+s"
-			elif ord(key) == 127: # Backspace/Delete key
-				return "DELETE"
-			elif ord(key) == 126: # Cancel key (NOT SUPPORTED TODO!)
-				return "CANCEL"
-			elif ord(key) == 13:  # Enter, Newline
-				return "ENTER"
-			elif ord(key) == 9:   # Tab
-				return "TAB"
-		finally:
-			termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-		return key
 
 
 def print_cursor(line, cursor_x):
